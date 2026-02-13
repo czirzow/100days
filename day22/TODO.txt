@@ -1,0 +1,50 @@
+# The Pong Game.
+The classic game.
+
+
+TODO:
+================
+
+* create screen
+* create and move paddle
+* create another paddle
+* create the ball and make it move
+* detect collision with wall and bounce
+* detect collision with paddle
+* detect when padddle misses
+* keep score
+
+
+Create screen: specs
+================
+window height: 600
+window width: 800
+bgcolor: black
+
+TODO: 
+. init screen
+. class init's
+  . ScoreBoard __init__
+     . draw()
+  . Paddle __init__
+    . events up() and down()
+  . Ball __init__
+    . moves_in_direction()
+
+
+Expect:
+===============
+screen to work
+  . define also y_wall, x_wall
+    . x_wall is game winning
+    . y_wall bounce at an angle(at_the_angle_of_attack).
+       . returns the direction ball should start moving forward.
+paddle_up and paddle_down
+ball moves back and forth can bounce off y_wall
+ball stops at x_wall
+
+
+
+
+
+
