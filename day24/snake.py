@@ -6,12 +6,17 @@ DOWN = 270
 LEFT = 180
 RIGHT = 0
 
+# higher value = slower
+SPEED_OF_SNAKE = 11
+
 
 class Snake:
 
     def __init__(self):
         self.segments = []
         self.reset()
+
+        self.moves = 0
 
     def create_snake(self):
         for position in STARTING_POSITIONS:
@@ -35,6 +40,10 @@ class Snake:
         self.add_segment(self.segments[-1].position())
 
     def move(self):
+        self.moves += 1
+        if self.moves % SPEED_OF_SNAKE != 0:
+            return
+
         for seg_num in range(len(self.segments) - 1, 0, -1):
             new_x = self.segments[seg_num - 1].xcor()
             new_y = self.segments[seg_num - 1].ycor()
