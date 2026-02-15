@@ -25,3 +25,7 @@ else:
 #but of course ...
 print("the easier way...")
 print(sum(temp_list) / len(temp_list))
+
+# and even easier:
+print(data['temp'].mean())
+
