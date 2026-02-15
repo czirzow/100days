@@ -10,3 +10,15 @@ print(data_dict)
 temp_list = data['temp'].to_list()
 print(temp_list)
 
+count = len(temp_list)
+total = 0
+for value in temp_list:
+    total += value
+
+print(f"total: {total}")
+print(f"count: {count}")
+if count == 0:
+    print("something went wrong")
+else:
+    print(f"total: {total/count}")
+
