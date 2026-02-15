@@ -29,3 +29,5 @@ print(sum(temp_list) / len(temp_list))
 # and even easier:
 print(data['temp'].mean())
 
+print(f"Max: {data['temp'].max()}")
+
