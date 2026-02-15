@@ -1,6 +1,6 @@
 import pandas
 
-data = pandas.read_csv('data/weather_data.csv')
+data = pandas.read_csv('weather/weather_data.csv')
 #print(type(data))
 #print(data["temp"])
 
