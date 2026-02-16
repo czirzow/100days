@@ -1,27 +1,23 @@
-student_dict = {
-    "student": ["Angela", "James", "Lily"], 
-    "score": [56, 76, 98]
-}
+import pandas as pd
 
-#Looping through dictionaries:
-for (key, value) in student_dict.items():
-    #Access key and value
-    pass
+nato_file = 'csv/nato.csv'
 
-import pandas
-student_data_frame = pandas.DataFrame(student_dict)
+#"a".capitalize()
+nato_df = pd.read_csv(nato_file)
+lookup = { c.letter:c.code for (_,c) in nato_df.iterrows() }
 
-#Loop through rows of a data frame
-for (index, row) in student_data_frame.iterrows():
-    #Access index and row
-    #Access row.student or row.score
-    pass
 
-# Keyword Method with iterrows()
-# {new_key:new_value for (index, row) in df.iterrows()}
+alpha = []
+while True:
+    line = input('Enter first and last name: ')
+    if line.lower() == 'exit':
+        break
 
-#TODO 1. Create a dictionary in this format:
-{"A": "Alfa", "B": "Bravo"}
+    alpha = [ lookup[l] for l in line.upper() if l in lookup]
+    print(alpha)
+    print("You can type 'exit' to quit")
 
-#TODO 2. Create a list of the phonetic code words from a word that the user inputs.
+print("\nGlad to help you today, I'm here to translate")
+
+
 
