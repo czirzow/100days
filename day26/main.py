@@ -9,11 +9,11 @@ lookup = { c.letter:c.code for (_,c) in nato_df.iterrows() }
 
 alpha = []
 while True:
-    line = input('Enter first and last name: ')
+    line = input('Enter first and last name: ').upper()
     if line.lower() == 'exit':
         break
 
-    alpha = [ lookup[l] for l in line.upper() if l in lookup]
+    alpha = [ lookup[l] for l in line if l in lookup]
     print(alpha)
     print("You can type 'exit' to quit")
 
