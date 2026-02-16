@@ -19,5 +19,3 @@ while True:
 
 print("\nGlad to help you today, I'm here to translate")
 
-
-
