@@ -39,20 +39,22 @@ if 1:
             'score': [56, 76, 98]
             }
     student_data_frame = pandas.DataFrame(student_dict)
-    print(student_data_frame)
+    #print(student_data_frame)
 
     #Loop throught data frame
     #for (key, value) in student_data_frame.items():
     #    print(f"{key}: {value}")
-    for (index, row) in student_data_frame.iterrows():
-        print(index)
-        if row.student == 'Angela':
-            print(f"{row.student}: {row.score}")
 
-    result = {r.student:r.score
-              for (i,r) in student_data_frame.iterrows()
-              if r.student == 'Angela'
-              }
-    print(result)
+    #for (index, row) in student_data_frame.iterrows():
+        #print(index)
+        #if row.student == 'Angela':
+            #print(f"{row.student}: {row.score}")
+
+    result = {
+            r.student:r.score
+            for r in student_data_frame.iterrows()
+            if r.student == 'Angela'
+            }
+    print(f"result: {result}")
 
 
