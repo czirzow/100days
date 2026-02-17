@@ -17,43 +17,46 @@ speed_things_up = 1
 reps = 0
 reps_settings = [
         { 'mode': 'Work', 'timer': 1 * speed_things_up},
-        { 'mode': '1st Break', 'timer': 1 * speed_things_up},
+        { 'mode': 'Break', 'timer': 1 * speed_things_up},
         { 'mode': 'Work', 'timer': 1 * speed_things_up},
         { 'mode': 'Long Break', 'timer': 4 * speed_things_up},
         ]
-
+timer_id = ""
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
-    pass
+    global timer_id
+    window.after_cancel(timer_id)
+    config_window(config, to_config)
+    print(f"Cancel: timer_id: {timer_id}")
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
     global reps, reps_settings
 
     if reps % 2:
-        checks_l['text'] += CHECKMARK
+        checks['text'] += CHECKMARK
 
     if reps == len(reps_settings):
-        checks_l['text'] = ''
+        checks['text'] = ''
         reps = 0
 
     config = reps_settings[reps]
-    timer_l['text'] = config['mode']
+    timer['text'] = config['mode']
     reps += 1
-
- 
 
     count_down(config['timer'])
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(count):
+    global timer_id
     min = math.floor(count / 60)
     sec = count % 60
     canvas.itemconfig(timer_text, text=f"{min:02d}:{sec:02d}")
     if count > 0:
-        window.after(1000, count_down, count - 1)
+        timer_id = window.after(1000, count_down, count - 1)
+        print(f"timer_id: {timer_id}")
     else:
         start_timer()
         pass
@@ -89,6 +92,7 @@ config = {
             'fg': GREEN,
             'bg': YELLOW,
             },
+        ## there are extra steps to handle canvas
         'canvas': {
             'width': 200,
             'height': 224,
@@ -102,34 +106,52 @@ config = {
             },
         }
 
+
+def config_window(config, items):
+
+    for name in items:
+        print(f"name is: {name}: {type(items[name])}")
+        i = items[name]
+        i.config(config[name])
+
+
+
+to_config = {}
+
 window = Tk()
 window.title('Pomodoro')
-window.config(**config['window'])
+to_config['window'] = window
 
 
-timer_l = Label()
-timer_l.config(**config['timer'])
-timer_l.grid(column=1, row=0)
+timer = Label(name="timer_l")
+timer.grid(column=1, row=0)
+to_config['timer'] = timer
 
+
+# this is odd, manual configuration
+# TODO: figure out a way to auto config this.
 canvas = Canvas(**config['canvas'])
-
 image = PhotoImage(file='images/tomato.png')
 canvas.create_image(100, 112, image=image)
 timer_text = canvas.create_text(100, 140, **config['canvas_text'])
 canvas.grid(column=1, row=1)
 
 
-start_b = Button(text="Start", fg=WHITE, bg=GREEN, command=start_timer)
-start_b.config(**config['start'])
-start_b.grid(column=0, row=2)
+start = Button()
+start.grid(column=0, row=2)
+to_config['start'] = start
 
-reset_b = Button(text="Reset", fg=WHITE, bg=GREEN, command=reset_timer)
-reset_b.config(**config['reset'])
-reset_b.grid(column=2, row=2)
 
-checks_l = Label(text=CHECKMARK*4, fg=GREEN, bg=YELLOW)
-checks_l.config(**config['checks'])
-checks_l.grid(column=1, row=3)
+reset = Button()
+reset.grid(column=2, row=2)
+to_config['reset'] = reset
+
+
+checks = Label()
+checks.grid(column=1, row=3)
+to_config['checks'] = checks
+config_window(config, to_config)
+
 
 
 window.mainloop()
