@@ -1,6 +1,11 @@
 from tkinter import Tk, Canvas, PhotoImage, Label, Button
 import math
 
+#TODO: make a class out of this
+# class Pomodoro(Tk):
+
+
+
 # ---------------------------- CONSTANTS ------------------------------- #
 WHITE="#ffffff"
 PINK = "#e2979c"
