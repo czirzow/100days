@@ -14,35 +14,96 @@ CHECKMARK = '✔'
 
 
 # ---------------------------- TIMER RESET ------------------------------- # 
+def reset_timer():
+    pass
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
+def start_timer():
+    count_down(5)
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+def count_down(count):
+    minutes = int(count / 60)
+    seconds = count - minutes
+    canvas.itemconfig(timer_text, text=f"{minutes:02d}:{seconds:02d}")
+    if count > 0:
+        window.after(1000, count_down, count - 1)
+    else:
+        reset_timer()
 
 # ---------------------------- UI SETUP ------------------------------- #
+
+config = {
+        'window': {
+            'padx': 100,
+            'pady':  50,
+            'bg': YELLOW,
+            },
+        'timer': {
+            'text': "Timer",
+            'fg': GREEN,
+            'bg': YELLOW,
+            'font': (FONT_NAME, 25),
+            },
+        'start': {
+            'text': "Start",
+            'fg': WHITE,
+            'bg': GREEN,
+            'command': start_timer
+            },
+        'reset': {
+            'text': "Reset",
+            'fg': WHITE,
+            'bg': GREEN,
+            'command': reset_timer
+            },
+        'checks': {
+            'text': '',
+            'fg': GREEN,
+            'bg': YELLOW,
+            },
+        'canvas': {
+            'width': 200,
+            'height': 224,
+            'bg': YELLOW,
+            'highlightthickness': 0,
+            },
+        'canvas_text': {
+            'text': "00:00",
+            'fill': "white",
+            'font': (FONT_NAME, 24, 'bold'),
+            },
+        }
+
 window = Tk()
 window.title('Pomodoro')
-window.config(padx=100, pady=50, bg=YELLOW)
+window.config(**config['window'])
 
 
-timer_l = Label(text="Timer", fg=GREEN, bg=YELLOW, font=(FONT_NAME, 25))
+timer_l = Label()
+timer_l.config(**config['timer'])
 timer_l.grid(column=1, row=0)
 
-canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)
+canvas = Canvas(**config['canvas'])
+
 image = PhotoImage(file='images/tomato.png')
 canvas.create_image(100, 112, image=image)
-canvas.create_text(100, 140, text="00:00", fill="white", font=(FONT_NAME, 24, 'bold'))
+timer_text = canvas.create_text(100, 140, **config['canvas_text'])
 canvas.grid(column=1, row=1)
 
 
-start_b = Button(text="Start", fg=WHITE, bg=GREEN)
+start_b = Button(text="Start", fg=WHITE, bg=GREEN, command=start_timer)
+start_b.config(**config['start'])
 start_b.grid(column=0, row=2)
 
-start_b = Button(text="Reset", fg=WHITE, bg=GREEN)
-start_b.grid(column=2, row=2)
+reset_b = Button(text="Reset", fg=WHITE, bg=GREEN, command=reset_timer)
+reset_b.config(**config['reset'])
+reset_b.grid(column=2, row=2)
 
-check_l = Label(text=CHECKMARK*4, fg=GREEN, bg=YELLOW)
-check_l.grid(column=1, row=3)
+checks_l = Label(text=CHECKMARK*4, fg=GREEN, bg=YELLOW)
+checks_l.config(**config['checks'])
+checks_l.grid(column=1, row=3)
 
 
 window.mainloop()
