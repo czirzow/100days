@@ -2,7 +2,11 @@ from tkinter import Tk, Canvas, PhotoImage, Label, Button
 import math
 
 #TODO: make a class out of this
+# Goal: remove the global variables
+#       they should be delt within a class that needs them
 # class Pomodoro(Tk):
+# add grid to to config
+#
 
 
 
