@@ -13,6 +13,15 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 CHECKMARK = '✔'
 
+speed_things_up = 1
+reps = 0
+reps_settings = [
+        { 'mode': 'Work', 'timer': 1 * speed_things_up},
+        { 'mode': '1st Break', 'timer': 1 * speed_things_up},
+        { 'mode': 'Work', 'timer': 1 * speed_things_up},
+        { 'mode': 'Long Break', 'timer': 4 * speed_things_up},
+        ]
+
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
@@ -20,7 +29,22 @@ def reset_timer():
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    count_down(5 * 60)
+    global reps, reps_settings
+
+    if reps % 2:
+        checks_l['text'] += CHECKMARK
+
+    if reps == len(reps_settings):
+        checks_l['text'] = ''
+        reps = 0
+
+    config = reps_settings[reps]
+    timer_l['text'] = config['mode']
+    reps += 1
+
+ 
+
+    count_down(config['timer'])
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -31,7 +55,7 @@ def count_down(count):
     if count > 0:
         window.after(1000, count_down, count - 1)
     else:
-        # next stage.
+        start_timer()
         pass
 
 # ---------------------------- UI SETUP ------------------------------- #
