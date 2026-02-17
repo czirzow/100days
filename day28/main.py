@@ -15,16 +15,18 @@ YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
-LONG_BREAK_MIN = 20
+LONG_BREAK_MIN = 300
 CHECKMARK = '✔'
 
-speed_things_up = 1
+
 reps = 0
 reps_settings = [
-        { 'mode': 'Work', 'timer': 1 * speed_things_up},
-        { 'mode': 'Break', 'timer': 1 * speed_things_up},
-        { 'mode': 'Work', 'timer': 1 * speed_things_up},
-        { 'mode': 'Long Break', 'timer': 4 * speed_things_up},
+        { 'mode': 'Work', 'timer': WORK_MIN},
+        { 'mode': 'Break', 'timer': SHORT_BREAK_MIN},
+        { 'mode': 'You got this', 'timer': WORK_MIN},
+        { 'mode': 'Breath', 'timer': SHORT_BREAK_MIN},
+        { 'mode': 'Work', 'timer': WORK_MIN},
+        { 'mode': 'Relax', 'timer': LONG_BREAK_MIN},
         ]
 timer_id = ""
 
