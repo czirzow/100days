@@ -1,4 +1,5 @@
 from tkinter import Tk, Canvas, PhotoImage, Label, Button
+import math
 
 # ---------------------------- CONSTANTS ------------------------------- #
 WHITE="#ffffff"
@@ -19,18 +20,19 @@ def reset_timer():
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    count_down(5)
+    count_down(5 * 60)
 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 def count_down(count):
-    minutes = int(count / 60)
-    seconds = count - minutes
-    canvas.itemconfig(timer_text, text=f"{minutes:02d}:{seconds:02d}")
+    min = math.floor(count / 60)
+    sec = count % 60
+    canvas.itemconfig(timer_text, text=f"{min:02d}:{sec:02d}")
     if count > 0:
         window.after(1000, count_down, count - 1)
     else:
-        reset_timer()
+        # next stage.
+        pass
 
 # ---------------------------- UI SETUP ------------------------------- #
 
