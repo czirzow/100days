@@ -46,7 +46,9 @@ def validate_and_save():
         show_message(message='Did not save to file')
         return
 
-    save_password(values)
+    if not save_password(values):
+        # save_password() already filled out the message box so just:
+        return
 
     #  clear out the most likely entries
     for name in ['website', 'password']:
@@ -62,13 +64,16 @@ def save_password(values):
         with open(file_name, 'a') as f:
             f.write(" | ".join(values) + "\n")
     except:
+        show_message(color='red', message=f"Unable to save to {file_name}")
         return False
 
     return True
 
 
 def show_message(message='', color='black'):
-    """sets the message label with a message"""
+    """sets the message label with a message
+    if message is blank it will clear the message label
+    """
 
     widgets['message'].config({
             'fg': color,
