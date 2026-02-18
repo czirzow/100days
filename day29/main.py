@@ -3,13 +3,41 @@
 from tkinter import *
 
 
+#Global:
+widgets = {}
+file_name = 'passwords/data.txt'
+
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     pass
 
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save_password():
-    pass
+
+    # reset message??
+    show_message()
+
+    values = []
+    for name in ['website', 'username', 'password']:
+        values.append(widgets[name].get())
+
+    with open(file_name, 'a') as f:
+        f.write(" | ".join(values) + "\n")
+
+    for name in ['website', 'username', 'password']:
+        widgets[name].delete(0, END)
+
+    show_message(message='Saved', color="green")
+
+
+def show_message(color='black', message=''):
+    widgets['message'].config({
+            'fg': color,
+            'text': message,
+            })
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -47,7 +75,7 @@ layout = {
                 'row': 2,
                 }
             },
-        'email': {
+        'username': {
             'type': Entry,
             'config': {
                 'width': 21,
@@ -104,12 +132,27 @@ layout = {
                 'columnspan': 2,
                 },
             },
+        'message': {
+                'type': Label,
+                'config': {
+                    'text': '',
+                    'width': 40,
+                    'pady': 15,
+                    },
+                'grid': {
+                    'column': 1,
+                    'row': 5,
+                    'columnspan': 3
+                    },
+                },
+
+
 
         }
 
 window = Tk()
 window.title('Password Manager')
-window.config(padx=20, pady=20)
+window.config(padx=50, pady=50)
 
 
 # hard coded canvas.. its a bit tricky
@@ -124,6 +167,9 @@ for (name, options) in layout.items():
         widget = options['type']()
         widget.config(options['config'])
         widget.grid(options['grid'])
+        widgets[name] = widget
+
+widgets['website'].focus()
 
 
 
