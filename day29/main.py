@@ -1,7 +1,13 @@
 # day 29
 # password manager with tkinter
+
+# FIXME: getting a wild card import * warning, but code runs in pyCharm
 from tkinter import *
 from tkinter import messagebox
+
+#
+# TODO: use pyperclip
+#       auto copy password gernerated to clipboard.
 
 
 #
@@ -41,27 +47,21 @@ def generate_password():
     widgets['password'].insert(END, RandomPassword.get())
 
 
-    pass
-
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def validate_and_save():
     global widgets
 
-    # reset message
-    show_message(message='Saving')
+    show_message(message='Saving...')
 
-    
-    # this should be standard.. 
     # with just simple validation
     save_values = ['website', 'username', 'password']
     values = [widgets[n].get() for n in save_values 
               if widgets[n].get().strip() != '']
 
     if len(values) != len(save_values):
-        show_message(color='red', message="All fields must be filled out")
+        show_message("All fields must be filled out", color='red')
         return
-    
+
     # Prompt if they want to continue...
     title = widgets['website'].get()
     msg = f"""Do you want to save this data?
@@ -69,7 +69,7 @@ def validate_and_save():
     password: {widgets['password'].get()}
     """
     if not messagebox.askyesno(title=title, message=msg):
-        show_message(message='Did not save to file')
+        show_message('Did not save to file')
         return
 
     if not save_password(values):
@@ -80,7 +80,7 @@ def validate_and_save():
     for name in ['website', 'password']:
         widgets[name].delete(0, END)
 
-    show_message(message='Saved !', color="green")
+    show_message('Saved !', color="green")
 
 
 def save_password(values):
@@ -90,7 +90,7 @@ def save_password(values):
         with open(file_name, 'a') as f:
             f.write(" | ".join(values) + "\n")
     except:
-        show_message(color='red', message=f"Unable to save to {file_name}")
+        show_message(f"Unable to save to {file_name}", color='red')
         return False
 
     return True
@@ -100,6 +100,7 @@ def show_message(message='', color='black'):
     """sets the message label with a message
     if message is blank it will clear the message label
     """
+    global widgets
 
     widgets['message'].config({
             'fg': color,
