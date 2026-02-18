@@ -190,7 +190,7 @@ layout = {
         'add': {
             'type': Button,
             'config': {
-                'text': 'Add',
+                'text': 'Save',
                 'width': 36,
                 'command': validate_and_save,
                 },
@@ -213,10 +213,8 @@ layout = {
                     'columnspan': 3
                     },
                 },
-
-
-
         }
+
 
 window = Tk()
 window.title('Password Manager')
@@ -238,7 +236,5 @@ for (name, options) in layout.items():
         widgets[name] = widget
 
 widgets['website'].focus()
-
-
-
 window.mainloop()
+
