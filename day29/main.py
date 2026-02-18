@@ -5,7 +5,7 @@ from tkinter import *
 
 #Global:
 widgets = {}
-file_name = 'passwords/data.txt'
+file_name = 'data/passwords.txt'
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
