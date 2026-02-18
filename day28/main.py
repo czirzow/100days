@@ -33,13 +33,15 @@ reps_settings = [
         { 'mode': 'Relax', 'timer': LONG_BREAK_MIN},
         ]
 timer_id = ""
+timer_text = ""
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 def reset_timer():
-    global timer_id
+    global timer_id, reps
     window.after_cancel(timer_id)
     config_window(config, to_config)
-    print(f"Cancel: timer_id: {timer_id}")
+    reps = 0
+    canvas.itemconfig(timer_text, text=f"{0:02d}:{0:02d}")
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
@@ -67,7 +69,6 @@ def count_down(count):
     canvas.itemconfig(timer_text, text=f"{min:02d}:{sec:02d}")
     if count > 0:
         timer_id = window.after(1000, count_down, count - 1)
-        print(f"timer_id: {timer_id}")
     else:
         start_timer()
         pass
@@ -119,9 +120,7 @@ config = {
 
 
 def config_window(config, items):
-
     for name in items:
-        print(f"name is: {name}: {type(items[name])}")
         i = items[name]
         i.config(config[name])
 
