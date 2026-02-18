@@ -67,7 +67,7 @@ def save_password(values):
     return True
 
 
-def show_message(color='black', message=''):
+def show_message(message='', color='black'):
     """sets the message label with a message"""
 
     widgets['message'].config({
