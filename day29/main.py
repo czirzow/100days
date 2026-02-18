@@ -42,8 +42,10 @@ class RandomPassword():
 def generate_password():
     global widgets
 
-    # FIXEDME: this isn't working!!!
-    # thanks to angela... i was stuck on this.
+    
+    #
+    # FIXME: the insert isn't workiing as expected
+    #        it just appends.
     widgets['password'].insert(END, RandomPassword.get())
 
 
