@@ -4,6 +4,10 @@ from tkinter import *
 from tkinter import messagebox
 
 
+#
+# TODO make this all into a class model
+#      there isn't a need to do globals.
+#
 #Global:
 widgets = {}
 file_name = 'data/passwords.txt'
