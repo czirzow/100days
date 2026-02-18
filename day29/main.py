@@ -1,6 +1,7 @@
 # day 29
 # password manager with tkinter
 from tkinter import *
+from tkinter import messagebox
 
 
 #Global:
@@ -14,30 +15,61 @@ def generate_password():
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
-def save_password():
+def validate_and_save():
+    global widgets
 
-    # reset message??
-    show_message()
+    # reset message
+    show_message(message='Saving')
 
-    values = []
-    for name in ['website', 'username', 'password']:
-        values.append(widgets[name].get())
+    
+    # this should be standard.. 
+    # with just simple validation
+    save_values = ['website', 'username', 'password']
+    values = [widgets[n].get() for n in save_values 
+              if widgets[n].get().strip() != '']
 
-    with open(file_name, 'a') as f:
-        f.write(" | ".join(values) + "\n")
+    if len(values) != len(save_values):
+        show_message(color='red', message="All fields must be filled out")
+        return
+    
+    # Prompt if they want to continue...
+    title = widgets['website'].get()
+    msg = f"""Do you want to save this data?
+    username: {widgets['username'].get()}
+    password: {widgets['password'].get()}
+    """
+    if not messagebox.askyesno(title=title, message=msg):
+        show_message(message='Did not save to file')
+        return
 
-    for name in ['website', 'username', 'password']:
+    save_password(values)
+
+    #  clear out the most likely entries
+    for name in ['website', 'password']:
         widgets[name].delete(0, END)
 
-    show_message(message='Saved', color="green")
+    show_message(message='Saved !', color="green")
+
+
+def save_password(values):
+    global file_name
+
+    try:
+        with open(file_name, 'a') as f:
+            f.write(" | ".join(values) + "\n")
+    except:
+        return False
+
+    return True
 
 
 def show_message(color='black', message=''):
+    """sets the message label with a message"""
+
     widgets['message'].config({
             'fg': color,
             'text': message,
             })
-
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -124,7 +156,7 @@ layout = {
             'config': {
                 'text': 'Add',
                 'width': 36,
-                'command': save_password,
+                'command': validate_and_save,
                 },
             'grid': {
                 'column': 1,
