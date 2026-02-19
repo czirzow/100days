@@ -1,9 +1,11 @@
 # day 29
 # password manager with tkinter
 
+
 # FIXME: getting a wild card import * warning, but code runs in pyCharm
 from tkinter import *
 from tkinter import messagebox
+import pyperclip
 
 #
 # TODO: use pyperclip
@@ -42,11 +44,9 @@ class RandomPassword():
 def generate_password():
     global widgets
 
-    
-    #
-    # FIXME: the insert isn't workiing as expected
-    #        it just appends.
     widgets['password'].insert(END, RandomPassword.get())
+    pyperclip.copy(widgets['password'].get())
+    show_message(message='Password copy to clipboard.', color='green')
 
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
