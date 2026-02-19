@@ -225,13 +225,12 @@ layout = {
                 'type': Label,
                 'config': {
                     'text': '',
-                    'width': 40,
                     'pady': 15,
                     },
                 'grid': {
-                    'column': 1,
+                    'column': 0,
                     'row': 5,
-                    'columnspan': 3
+                    'columnspan': 4
                     },
                 },
         }
