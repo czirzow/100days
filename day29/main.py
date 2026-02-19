@@ -3,22 +3,19 @@
 
 
 # FIXME: getting a wild card import * warning, but code runs in pyCharm
+# TODO: look into TK() and tkk methods, i've seen.
+#
 from tkinter import *
 import json
 import pyperclip
-
 #
-# TODO: use pyperclip
-#       auto copy password gernerated to clipboard.
 
-
-#
 # TODO make this all into a class model
 #      there isn't a need to do globals.
 #
 #Global:
 widgets = {}
-file_name = 'data/passwords.json'
+file_name = 'passwords.json'
 
 
 from random import choice, randint, shuffle, shuffle
@@ -44,7 +41,7 @@ class RandomPassword():
 def generate_password():
     global widgets
 
-    widgets['password'].insert(END, RandomPassword.get())
+    widgets['password'].insert(0, RandomPassword.get())
     pyperclip.copy(widgets['password'].get())
     show_message(message='Password copy to clipboard.', color='green')
 
@@ -88,10 +85,6 @@ def save_password():
                 "password": password,
             }
     }
-
-
-    #TODO: check for if file exists, if not create it.
-    #
 
     try:
         with open(file_name, 'r') as fh:
