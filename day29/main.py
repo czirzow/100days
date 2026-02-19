@@ -4,7 +4,7 @@
 
 # FIXME: getting a wild card import * warning, but code runs in pyCharm
 from tkinter import *
-from tkinter import messagebox
+import json
 import pyperclip
 
 #
@@ -18,7 +18,7 @@ import pyperclip
 #
 #Global:
 widgets = {}
-file_name = 'data/passwords.txt'
+file_name = 'data/passwords.json'
 
 
 from random import choice, randint, shuffle, shuffle
@@ -64,17 +64,7 @@ def validate_and_save():
         show_message("All fields must be filled out", color='red')
         return
 
-    # Prompt if they want to continue...
-    title = widgets['website'].get()
-    msg = f"""Do you want to save this data?
-    username: {widgets['username'].get()}
-    password: {widgets['password'].get()}
-    """
-    if not messagebox.askyesno(title=title, message=msg):
-        show_message('Did not save to file')
-        return
-
-    if not save_password(values):
+    if not save_password():
         # save_password() already filled out the message box so just:
         return
 
@@ -85,17 +75,46 @@ def validate_and_save():
     show_message('Saved !', color="green")
 
 
-def save_password(values):
+def save_password():
     global file_name
+    global widgets
+
+    website = widgets['website'].get()
+    username = widgets['username'].get()
+    password = widgets['password'].get()
+    new_data = {
+            website: {
+                "username": username,
+                "password": password,
+            }
+    }
+
+
+    #TODO: check for if file exists, if not create it.
+    #
 
     try:
-        with open(file_name, 'a') as f:
-            f.write(" | ".join(values) + "\n")
-    except:
-        show_message(f"Unable to save to {file_name}", color='red')
+        with open(file_name, 'r') as fh:
+            data = json.load(fh)
+            data.update(new_data)
+
+    except FileNotFoundError as e:
+        show_message(f"Unable to save to {file_name}:\n {e}", color='red')
         return False
 
-    return True
+    except json.JSONDecodeError as e:
+        show_message(f"{file_name} has bad data. remaking it.")
+        data = new_data
+
+    try:
+        with open(file_name, 'w') as fh:
+            json.dump(data, fh, indent=4)
+
+    except PermissionError as e:
+        show_message(f"Can't write to {file_name}:\n {e}", color='red')
+        return False
+
+    show_message(f"saved to {file_name}.", color='green')
 
 
 def show_message(message='', color='black'):
