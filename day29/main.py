@@ -124,7 +124,7 @@ def search_website():
     data = {}
 
     try:
-        with open(file_name+'t', 'r') as fh:
+        with open(file_name, 'r') as fh:
             data = json.load(fh)
 
     except FileNotFoundError as e:
