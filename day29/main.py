@@ -116,6 +116,8 @@ def save_password():
 
     show_message(f"saved to {file_name}.", color='green')
 
+def search_website():
+    pass
 
 def show_message(message='', color='black'):
     """sets the message label with a message
@@ -145,7 +147,7 @@ layout = {
             'type': Entry,
             'config': {
                 'justify': 'left',
-                'width': 35,
+                'width': 21,
                 },
             'grid': {
                 'column': 1,
@@ -154,6 +156,18 @@ layout = {
                 'sticky': 'w',
                 },
             },
+        'search_website': {
+            'type': Button,
+            'config': {
+                'text': 'search',
+                'command': search_website,
+                },
+            'grid': {
+                'column': 2,
+                'row': 1,
+                },
+            },
+
         'l_email': {
             'type': Label,
             'config': {
