@@ -117,7 +117,36 @@ def save_password():
     show_message(f"saved to {file_name}.", color='green')
 
 def search_website():
-    pass
+    global widgets
+    global file_name
+
+    search_for = widgets['website'].get()
+    data = {}
+
+    try:
+        with open(file_name+'t', 'r') as fh:
+            data = json.load(fh)
+
+    except FileNotFoundError as e:
+        # let the user know.. we are not going fix it for them.
+        show_message(f"{e}", color='red')
+    except json.JSONDecodeError as e:
+        # In case it can't be decoded, let them know
+        show_message(f"Failed Parsing {file_name}:\n{e}", color='red')
+    except Exception as e:
+        # Default exception case.
+        show_message(f"{e}\n[WARNING] nothing will be able to be saved.", color="magenta")
+    else:
+
+        if not search_for in data:
+            show_message('Not Found')
+            return
+
+        found_data = data[search_for]
+        widgets['username'].insert(0, found_data['username'])
+        widgets['password'].insert(0, found_data['password'])
+        show_message('Found!', color='green')
+
 
 def show_message(message='', color='black'):
     """sets the message label with a message
