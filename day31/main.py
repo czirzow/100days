@@ -57,10 +57,23 @@ class Flashy:
         self.btn_nope.config(state="disabled")
         pass
 
+    def finished(self):
+
+        c = self.canvas
+        c.itemconfig(self.language, text='Finished with Deck', fill=COLOR_WHITE)  
+        c.itemconfig(self.word, text='Well Done!', fill=COLOR_WHITE)
+        c.itemconfig(self.card_side, image=self.images['card_back'])
+        self.disable_buttons()
+
     def new_card(self):
-        self.enable_buttons()
-        self.translated = self.translator.get_translated()
-        self.show_front()
+
+        if self.translator.has_more():
+            self.translated = self.translator.get()
+            self.show_front()
+            self.enable_buttons()
+        else:
+            self.finished()
+
 
     def show_back(self):
         c = self.canvas

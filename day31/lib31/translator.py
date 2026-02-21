@@ -47,23 +47,14 @@ class Translator():
             self.lang_to = lang_to.title()
             self.lookup = {c.lang_from:c.lang_to for (_,c) in translate.iterrows()}
 
-    def get_translated(self):
+    def has_more(self):
+        return len(self.lookup) > 0
+
+    def get(self):
         if len(self.lookup):
             word = random.choice(list(self.lookup))
             translated = self.lookup[word]
             return Translated(self.lang, word, translated)
-
-    def get(self):
-        """returns a tuple with (lang_from, lang_to)"""
-        
-        lang_from = ""
-        lang_to = ""
-
-        if len(self.lookup):
-            lang_from = random.choice(list(self.lookup))
-            lang_to = self.lookup[lang_from]
-
-        return (lang_from, lang_to)
 
     def remove(self, word):
         """remove a word from the list so it won't be returned again"""
