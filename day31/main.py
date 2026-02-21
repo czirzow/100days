@@ -1,84 +1,24 @@
 # day 31
-#force pycharm to read requirements.txt
-import pandas as pd
-import random
 import tkinter as tk
+
 
 
 LANGUAGES = {
         'fr': 'French',
         'en': 'English',
         }
+
 CARD_IMAGES = {
-        'front': 'images/card_front.png'
+        'front': 'images/card_front.png',
+        'back': 'images/card_back.png',
+        'right': 'images/card_right.png',
+        'wrong': 'images/card_wrong.png',
         }
-
-
 COLOR_WHITE = '#FFFFFF'
 BG_COLOR = '#B1DDCC'
 
-# TODO: move to flashcard.translator:
-# requires: pandas
-##import pandas as pd
-class Translator():
-    translate_dir = 'lang/'
 
-    def __init__(self, lang_from: str, lang_to:str, dir:str = "lang/") -> None:
-        """ something like:
-        t = Translator('de', 'fr', dir='.langs/')
-        """
-        try:
-            self.translation_dir = dir
-            filename = f"{self.translate_dir}{lang_from}_{lang_to}.csv"
-
-            translate = pd.read_csv(filename)
-
-
-        except FileNotFoundError as e:
-            print(f"Unable to open file: {e}")
-            exit()
-        except pd.errors.EmptyDataError as e:
-            print(f"Problem parsing file: {e}")
-            pass
-        except pd.errors.ParserError as e:
-            print(f"Problem parsing file: {e}")
-            pass
-        else:
-
-            self.lang_from = lang_from.title()
-            self.lang_to = lang_to.title()
-            self.lookup = {c.lang_from:c.lang_to for (_,c) in translate.iterrows()}
-
-    def get(self):
-        """returns a tuple with (lang_from, lang_to)"""
-        
-        lang_from = ""
-        lang_to = ""
-
-        if len(self.lookup):
-            lang_from = random.choice(list(self.lookup))
-            lang_to = self.lookup[word]
-
-        return (lang_from, lang_to)
-
-    def remove(self, word):
-        """remove a word from the list so it won't be returned again"""
-        del self.lookup[word]
-
-# a sanity for class
-if 0 :
-    t = Translator('fr', 'en')
-    have_a_word = True
-    while have_a_word:
-        (word, translated) = t.get()
-        if word != '':
-            print(f"{word}: {translated}")
-            t.remove(word)
-        else:
-            have_a_word = False
-
-
-#TODO: make this a class.
+# is there not a tool that does this?
 def setup_widgets(parent: tk.Tk, widgets: dict, layout: dict):
     """"a widget maker
     parent - a tkinter widget
@@ -86,7 +26,7 @@ def setup_widgets(parent: tk.Tk, widgets: dict, layout: dict):
     layout - dictionary of layouts
      """
     for (name, options) in layout.items():
-        print(name)
+        print(f"setting up widget {name}")
         if 'type' in options:
             widget = options['type'](master=parent)
             widget.config(options['config'])
