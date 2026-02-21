@@ -25,30 +25,38 @@ class Flashy:
 
         self.btn_nope = tk.Button(image=self.images['img_nope'], 
                                   highlightthickness=0, 
-                                  command=self.on_btn_nope
-                                  ).grid(row=1, column=0)
+                                  command=self.on_btn_nope)
+        self.btn_nope.grid(row=1, column=0)
 
         self.btn_yep = tk.Button(image=self.images['img_yep'], 
                                  highlightthickness=0, 
                                  command=self.on_btn_yep
-                                 ).grid(row=1, column=1)
+                                 )
+        self.btn_yep.grid(row=1, column=1)
 
     def set_translator(self, translator):
         self.translator = translator
 
     def on_btn_yep(self):
-        if self.timer_id:
-            return
         self.translator.remove(self.translated.native)
         self.new_card()
 
     def on_btn_nope(self):
-        if self.timer_id:
-            return
         self.show_back()
+        self.disable_buttons()
         self.count_down(5)
 
+    def enable_buttons(self):
+        self.btn_yep.config(state="normal")
+        self.btn_nope.config(state="normal")
+
+    def disable_buttons(self):
+        self.btn_yep.config(state="disabled")
+        self.btn_nope.config(state="disabled")
+        pass
+
     def new_card(self):
+        self.enable_buttons()
         self.translated = self.translator.get_translated()
         print(self.translated.native, self.translated.value)
         self.show_front()
