@@ -58,20 +58,19 @@ class Flashy:
     def new_card(self):
         self.enable_buttons()
         self.translated = self.translator.get_translated()
-        print(self.translated.native, self.translated.value)
         self.show_front()
 
     def show_back(self):
         c = self.canvas
         c.itemconfig(self.language, text = self.translator.lang['to'], fill=COLOR_WHITE)  
-        c.itemconfig(self.word, text=self.translated.value)
+        c.itemconfig(self.word, text=self.translated.value, fill=COLOR_WHITE)
         c.itemconfig(self.card_side, image=self.images['card_back'])
 
 
     def show_front(self):
         c = self.canvas
         c.itemconfig(self.language, text = self.translator.lang['from'], fill=COLOR_BLACK)  
-        c.itemconfig(self.word, text=self.translated.native)
+        c.itemconfig(self.word, text=self.translated.native, fill=COLOR_BLACK)
         c.itemconfig(self.card_side, image=self.images['card_front'])
 
 
@@ -83,7 +82,6 @@ class Flashy:
 
     def count_down(self, count):
         if count > 0:
-            print("count: ", count)
             self.timer_id = window.after(1000, self.count_down, count - 1)
         else:
             self.finish_timer()
