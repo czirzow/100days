@@ -3,6 +3,7 @@ import random
 
 LANGUAGES = {
         'fr': 'French',
+        'de': 'German',
         'en': 'English',
         }
 

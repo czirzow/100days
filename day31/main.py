@@ -5,6 +5,8 @@ COLOR_WHITE = '#FFFFFF'
 COLOR_BG  = '#B1DDC6'
 COLOR_BLACK = '#000000'
 
+lang_from = 'de'
+lang_to = 'en'
 
 class Flashy:
     def __init__(self, root, images):
@@ -99,10 +101,9 @@ flashy_images = {
         'img_yep': tk.PhotoImage(file="images/right.png"),
 }
 flashy = Flashy(window, flashy_images)
-flashy.set_translator(trans.Translator('fr', 'en'))
+
+flashy.set_translator(trans.Translator(lang_from, lang_to))
 flashy.new_card()
-
-
 
 
 window.mainloop()
