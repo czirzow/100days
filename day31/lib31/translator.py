@@ -1,5 +1,10 @@
 import pandas as pd
+import random
 
+LANGUAGES = {
+        'fr': 'French',
+        'en': 'English',
+        }
 
 class Translator():
     """read a file from {lang_dir}/{lang_from}_{lang_to}.csv"""
@@ -11,6 +16,8 @@ class Translator():
         """
         try:
             self.translation_dir = dir
+            self.lang = {'from': LANGUAGES[lang_from],
+                         'to': LANGUAGES[lang_to]}
             filename = f"{dir}{lang_from}_{lang_to}.csv"
 
             translate = pd.read_csv(filename)
@@ -39,7 +46,7 @@ class Translator():
 
         if len(self.lookup):
             lang_from = random.choice(list(self.lookup))
-            lang_to = self.lookup[word]
+            lang_to = self.lookup[lang_from]
 
         return (lang_from, lang_to)
 
