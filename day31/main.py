@@ -2,12 +2,10 @@
 import tkinter as tk
 
 
-
 LANGUAGES = {
         'fr': 'French',
         'en': 'English',
         }
-
 CARD_IMAGES = {
         'front': 'images/card_front.png',
         'back': 'images/card_back.png',
@@ -47,6 +45,8 @@ window = tk.Tk()
 
 # 
 # layout: a dict for setup widgets(layout=layout) 
+# TODO: add font and add the two buttons at the bottom.
+# TODO: add card_back it's basicly a dup of 'front' but with a different image
 layout = {
         'card_front': {
             'type': tk.Button,
@@ -56,6 +56,7 @@ layout = {
             'grid': {
                 'column': 0,
                 'row': 0,
+                'columnspan': 2,
                 },
             'children': {
                 'front_lang_from': {
@@ -68,7 +69,7 @@ layout = {
                         'x': 400,
                         'y': 150,
                         },
-                    },
+                    }, #/front_lang_from
                 'front_lang_to': {
                     'type': tk.Label,
                     'config': {
@@ -79,9 +80,12 @@ layout = {
                         'x': 400,
                         'y': 263,
                         },
-                    },
-                },
-            },
+                    }, #/front_lang_to
+                }, #/children
+            }, #/card front
+        # TODO: add card_back
+        # TODO: add the two buttons on row 1
+
         }
 
 
