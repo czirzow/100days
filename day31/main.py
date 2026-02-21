@@ -47,6 +47,78 @@ class Translator():
         pass
 
 
+def setup_widgets(parent, widgets, layout):
+    for (name, options) in layout.items():
+        print(name)
+        if 'type' in options:
+            widget = options['type'](master=parent)
+            widget.config(options['config'])
+            if 'grid' in options:
+                widget.grid(options['grid'])
+            if 'place' in options:
+                widget.place(x=options['place']['x'],
+                             y=options['place']['y'])
+            if 'children' in options:
+                setup_widgets(widget, widgets, options['children'])
+
+            widgets[name] = widget
+
+    return widgets
+
+import tkinter as tk
+COLOR_WHITE = '#FFFFFF'
+BG_COLOR = '#B1DDCC'
+
+window = tk.Tk()
+layout = {
+        'card_front': {
+            'type': tk.Button,
+            'config': {
+                'image': tk.PhotoImage(file='images/card_front.png'),
+                },
+            'grid': {
+                'column': 0,
+                'row': 0,
+                },
+            'children': {
+                'front_lang_from': {
+                    'type': tk.Label,
+                    'config': {
+                        'text': 'French',
+                        'bg': COLOR_WHITE,
+                        },
+                    'place': {
+                        'x': 400,
+                        'y': 150,
+                        },
+                    },
+                'front_lang_to': {
+                    'type': tk.Label,
+                    'config': {
+                        'text': 'Français',
+                        'bg': COLOR_WHITE,
+                        },
+                    'place': {
+                        'x': 400,
+                        'y': 263,
+                        },
+                    },
+                },
+            },
+        }
+
+#bg_image = tk.PhotoImage(file='images/card_front.png')
+#bg_label = tk.Label(window, image=bg_image)
+#bg_label.place(relwidth=1, relheight=1)
+#bg_label.grid(column=0, row=0)
+widgets = {}
+setup_widgets(window, widgets, layout)
+
+window.mainloop()
+
+
+
+
 
 
 if 0 :
