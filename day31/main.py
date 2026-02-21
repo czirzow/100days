@@ -9,8 +9,8 @@ LANGUAGES = {
 CARD_IMAGES = {
         'front': 'images/card_front.png',
         'back': 'images/card_back.png',
-        'right': 'images/card_right.png',
-        'wrong': 'images/card_wrong.png',
+        'right': 'images/right.png',
+        'wrong': 'images/wrong.png',
         }
 COLOR_WHITE = '#FFFFFF'
 BG_COLOR = '#B1DDCC'
@@ -42,6 +42,12 @@ def setup_widgets(parent: tk.Tk, widgets: dict, layout: dict):
 
 
 window = tk.Tk()
+window.title("Flashy")
+window.config(bg=BG_COLOR,
+              padx=50,
+              pady=50)
+window.resizable(False, False)
+
 
 # 
 # layout: a dict for setup widgets(layout=layout) 
@@ -52,6 +58,10 @@ layout = {
             'type': tk.Button,
             'config': {
                 'image': tk.PhotoImage(file=CARD_IMAGES['front']),
+                'bg': BG_COLOR,
+                'relief': 'flat',
+                'activebackground': BG_COLOR,
+                'bd': 0,
                 },
             'grid': {
                 'column': 0,
@@ -63,10 +73,11 @@ layout = {
                     'type': tk.Label,
                     'config': {
                         'text': 'French',
+                        'font': ('Arial', 15, 'italic'),
                         'bg': COLOR_WHITE,
                         },
                     'place': {
-                        'x': 400,
+                        'x': 300,
                         'y': 150,
                         },
                     }, #/front_lang_from
@@ -75,16 +86,37 @@ layout = {
                     'config': {
                         'text': 'Français',
                         'bg': COLOR_WHITE,
+                        'font': ('Arial', 20, 'bold'),
                         },
                     'place': {
-                        'x': 400,
+                        'x': 300,
                         'y': 263,
                         },
                     }, #/front_lang_to
                 }, #/children
             }, #/card front
         # TODO: add card_back
-        # TODO: add the two buttons on row 1
+        #
+        'press_wrong': {
+            'type': tk.Button,
+            'config': {
+                'image': tk.PhotoImage(file=CARD_IMAGES['wrong']),
+                },
+            'grid': {
+                'column': 0,
+                'row': 1,
+                },
+            },
+        'press_right': {
+            'type': tk.Button,
+            'config': {
+                'image': tk.PhotoImage(file=CARD_IMAGES['right']),
+                },
+            'grid': {
+                'column': 1,
+                'row': 1,
+                },
+            },
 
         }
 
