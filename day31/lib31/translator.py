@@ -6,6 +6,14 @@ LANGUAGES = {
         'en': 'English',
         }
 
+class Translated():
+
+    def __init__(self, lang, word, translated):
+        self.lang = lang
+        self.native = word 
+        self.value = translated
+
+
 class Translator():
     """read a file from {lang_dir}/{lang_from}_{lang_to}.csv"""
 
@@ -37,6 +45,12 @@ class Translator():
             self.lang_from = lang_from.title()
             self.lang_to = lang_to.title()
             self.lookup = {c.lang_from:c.lang_to for (_,c) in translate.iterrows()}
+
+    def get_translated(self):
+        if len(self.lookup):
+            word = random.choice(list(self.lookup))
+            translated = self.lookup[word]
+            return Translated(self.lang, word, translated)
 
     def get(self):
         """returns a tuple with (lang_from, lang_to)"""
