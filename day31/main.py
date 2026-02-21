@@ -46,7 +46,7 @@ class Flashy:
     def on_btn_nope(self):
         self.show_back()
         self.disable_buttons()
-        self.count_down(5)
+        self.timer_start(5)
 
     def enable_buttons(self):
         self.btn_yep.config(state="normal")
@@ -89,17 +89,17 @@ class Flashy:
         c.itemconfig(self.card_side, image=self.images['card_front'])
 
 
-    def finish_timer(self):
+    def timer_finish(self):
         window.after_cancel(self.timer_id)
         self.timer_id = ""
         self.new_card()
 
 
-    def count_down(self, count):
+    def timer_start(self, count):
         if count > 0:
-            self.timer_id = window.after(1000, self.count_down, count - 1)
+            self.timer_id = window.after(1000, self.timer_start, count - 1)
         else:
-            self.finish_timer()
+            self.timer_finish()
 
 
 window = tk.Tk()
