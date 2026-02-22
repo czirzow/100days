@@ -2,7 +2,7 @@ import smtplib
 
 smtp_hostname='smtp.gmail.com'
 my_email='czirzow@gmail.com'
-password='qqgt vlhb oorr ldwr'
+password=''
 
 # by default we do not want to send mail.
 # this is just proof of concept code.
