@@ -3,7 +3,10 @@ import datetime as dt
 
 csv_file = 'data/birthdays.csv'
 
-def today():
+def today() -> dict:
+    """return a dict of birthdays that are today
+    {name: email}
+    """
 
     birthdays = {}
 
