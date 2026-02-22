@@ -1,9 +1,21 @@
 import tkinter as tk
+import requests as req
 
+def request_kanye_quote():
+    url = "https://api.kanye.rest/"
+    print(f"request {url}")
+    resp = req.request(url=url, method="GET")
+    try: 
+        resp.raise_for_status()
+    except req.exceptions.RequestException as e:
+        print(f"Unable to get quote: {e}")
+        return ""
+    else:
+        print(f"got response: {resp.json()}")
+        return resp.json()['quote']
 
 def get_quote():
-    pass
-    #Write your code here.
+    canvas.itemconfig(quote_text, text=request_kanye_quote())
 
 
 
