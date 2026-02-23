@@ -77,6 +77,7 @@ class QuizInterface:
             self.canvas.config(bg=COLOR_GREEN)
         else:
             self.canvas.config(bg=COLOR_RED)
+        self.set_yep_nope('disabled')
         self.window.after(1000, self.get_next_question)
         self.update_score()
         self.set_yep_nope('normal')
@@ -85,6 +86,7 @@ class QuizInterface:
         self.canvas.config(bg=COLOR_WHITE)
         if not self.quiz.still_has_questions():
             self.do_we_want_more()
+            self.set_yep_nope('disabled')
         else:
             question = self.quiz.next_question()
             self.canvas.itemconfig(self.question, text=question)
