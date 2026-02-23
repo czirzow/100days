@@ -39,7 +39,7 @@ class OpenTriviaApi:
 
         # using default encoding html codes
         # lets clean it up.
-        for item in data['result']:
+        for item in data['results']:
             q = item.get('question')
             if isinstance(q, str):
                 item['question'] = html.unescape(q)
