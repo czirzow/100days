@@ -5,6 +5,11 @@ from data.data import question_data
 
 from opentrivia.api import OpenTriviaApi
 import json
+from lib34.ui import QuizInterface
+
+
+
+
 
 
 def refresh_data():
@@ -31,10 +36,17 @@ def get_question_bank(question_data):
 
 
 quiz = QuizBrain(get_question_bank(question_data))
+ui = QuizInterface(quiz)
+
+exit()
 
 while True:
     while quiz.still_has_questions():
-        quiz.next_question()
+        question = quiz.next_question()
+        input()
+        
+
+
 
     print("refreshing data bank")
     question_data = refresh_data()
