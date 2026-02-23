@@ -17,6 +17,7 @@ class QuizInterface:
 
         self.window =  tk.Tk()
         self.window.title('Quizzler')
+        self.window.resizable(False, False)
         self.window.config(bg=THEME_COLOR, padx=20, pady=20)
 
         self.images = {

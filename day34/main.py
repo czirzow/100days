@@ -18,7 +18,7 @@ def to_quiz_brain_data(question_data):
 
 
 manager = Manager()
-print(manager.question_data)
+manager.refresh_data(30)
 
 quiz = QuizBrain(to_quiz_brain_data(manager.question_data))
 ui = QuizInterface(quiz)
