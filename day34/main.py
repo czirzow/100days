@@ -1,7 +1,7 @@
 from lib34.question_model import Question
 from lib34.quiz_brain import QuizBrain
 from lib34.ui import QuizInterface
-from data.manager import Manager
+from data.manager import Manager as DataManager
 
 
 
@@ -17,8 +17,11 @@ def to_quiz_brain_data(question_data):
 
 
 
-manager = Manager()
-manager.refresh_data(30)
+# TODO: where to put this.
+manager = DataManager()
+#disable 
+# TODO: ask 
+#manager.refresh_data(30)
 
 quiz = QuizBrain(to_quiz_brain_data(manager.question_data))
 ui = QuizInterface(quiz)
