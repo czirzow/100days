@@ -16,11 +16,13 @@ MY_LON = -122.715637 # Your longitude
 params = {
      'lat': MY_LAT,
      'lon': MY_LON,
+     'cnt': 4,
      'appid': API_KEY,
      }
 
 #class Cache
 import json
+import os
 #
 class Cache():
 
@@ -37,7 +39,6 @@ class Cache():
                    json.dump(value, fh, indent=4) 
           # TODO: add good handling here
           except FileNotFoundError:
-               print("Error!")
                return False
           else:
                return True
@@ -54,7 +55,8 @@ class Cache():
           return data
 
      def is_cached(self) -> bool:
-          return False
+          return os.path.exists(self.filename())
+
      def is_expired(self) -> bool:
           return False
 
@@ -78,6 +80,9 @@ else:
          exit(1)
      data = resp.json()
      cache.save(data)
+
+if 0 < len([w['weather'][0]['id'] for w in data['list'] if w['weather'][0]['id'] < 700]):
+     print("It is going to rain, bring an umbrella")
 
 
 
