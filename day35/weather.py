@@ -81,7 +81,9 @@ else:
      data = resp.json()
      cache.save(data)
 
-if 0 < len([w['weather'][0]['id'] for w in data['list'] if w['weather'][0]['id'] < 700]):
+# is this to messy?? 
+if 0 < len([w['weather'][0]['id'] for w in data['list'] 
+            if w['weather'][0]['id'] < 700]):
      print("It is going to rain, bring an umbrella")
 
 
