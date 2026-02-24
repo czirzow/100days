@@ -7,6 +7,7 @@ import requests as req
 API_VERSION = '2.5'
 API_ENDPOINT = f"https://api.openweathermap.org/data/{API_VERSION}/"
 API_URI_WEATHER = 'weather'
+API_URI_FORECAST = 'forecast'
 
 API_KEY = 'c50f74019929a801e046f56ae0cb01ec'
 MY_LAT = 38.439701 # Your latitude
@@ -24,7 +25,7 @@ import json
 class Cache():
 
      def __init__(self, name: str, cache_dir:str ='cache/'):
-          self.name = API_URI_WEATHER
+          self.name = name
           self.cache_dir = cache_dir 
 
      def filename(self) -> str:
@@ -47,10 +48,9 @@ class Cache():
                with open(self.filename(), 'r') as fh:
                     data = json.load(fh);
           except FileNotFoundError as e:
-               print("File not found"
+               print("File not found")
+               return {}
 
-
-          #open file and return a dict
           return data
 
      def is_cached(self) -> bool:
@@ -62,12 +62,14 @@ class Cache():
 ## TODO: cache the value,
 ##      . if cache is not expired keep it otherwise do another request.
 #url = f"{API_ENDPOINT}?lat={params['lat']}&lon={params['lon']}&appid={params['appid']}"
-cache = Cache(API_URI_WEATHER)
+
+request_for = API_URI_FORECAST
+cache = Cache(request_for)
 
 if cache.is_cached():
      data = cache.read()
 else:
-     resp = req.get(API_ENDPOINT + API_URI_WEATHER, params=params)
+     resp = req.get(API_ENDPOINT + request_for, params=params)
      try:
          resp.raise_for_status()
 
@@ -76,7 +78,6 @@ else:
          exit(1)
      data = resp.json()
      cache.save(data)
-
 
 
 
