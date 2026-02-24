@@ -21,37 +21,52 @@ params = {
 #class Cache
 import json
 #
-## def __init__(self, name: str, cache_dir:str ='cache/')
-cache_dir = 'cache/'
+class Cache():
 
-def filename(name: str) -> str:
-     return f"{cache_dir}{name}.json"
+     def __init__(self, name: str, cache_dir:str ='cache/'):
+          self.name = API_URI_WEATHER
+          self.cache_dir = cache_dir 
 
-def save(name: str, value: str) -> bool:
-     try:
-          with open(filename(name), 'w') as fh:
-              json.dump(value, fh, indent=4) 
-     # TODO: add good handling here
-     except FileNotFoundError:
-          print("Error!")
+     def filename(self) -> str:
+          return f"{self.cache_dir}{self.name}.json"
+
+     def save(self, value: dict) -> bool:
+          try:
+               with open(self.filename(), 'w') as fh:
+                   json.dump(value, fh, indent=4) 
+          # TODO: add good handling here
+          except FileNotFoundError:
+               print("Error!")
+               return False
+          else:
+               return True
+
+     #still class Cache
+     def read(self) -> dict:
+          try: 
+               with open(self.filename(), 'r') as fh:
+                    data = json.load(fh);
+          except FileNotFoundError as e:
+               print("File not found"
+
+
+          #open file and return a dict
+          return data
+
+     def is_cached(self) -> bool:
           return False
-     else:
-          return True
-
-#still class Cache
-def read(name: str):
-     pass
-def is_cached(name: str):
-     return False
-def is_expired(name: str):
-     pass
+     def is_expired(self) -> bool:
+          return False
 
 
-__TODO_CACHE_THIS__ = True
 ## TODO: cache the value,
 ##      . if cache is not expired keep it otherwise do another request.
 #url = f"{API_ENDPOINT}?lat={params['lat']}&lon={params['lon']}&appid={params['appid']}"
-if __TODO_CACHE_THIS__:
+cache = Cache(API_URI_WEATHER)
+
+if cache.is_cached():
+     data = cache.read()
+else:
      resp = req.get(API_ENDPOINT + API_URI_WEATHER, params=params)
      try:
          resp.raise_for_status()
@@ -59,15 +74,8 @@ if __TODO_CACHE_THIS__:
      except req.exceptions.RequestException as e:
          print(f"Failed request: {e}")
          exit(1)
-
      data = resp.json()
-     print(data)
-     print(save(API_URI_WEATHER, data))
-
-else:
-        pass
-
-
+     cache.save(data)
 
 
 
