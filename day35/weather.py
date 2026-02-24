@@ -1,5 +1,6 @@
 # notes day 35
 import requests as req
+import os
 
 # openweathermap.org
 # apikey:
@@ -9,7 +10,8 @@ API_ENDPOINT = f"https://api.openweathermap.org/data/{API_VERSION}/"
 API_URI_WEATHER = 'weather'
 API_URI_FORECAST = 'forecast'
 
-API_KEY = 'c50f74019929a801e046f56ae0cb01ec'
+
+API_KEY = os.environ.get("API_KEY")
 MY_LAT = 38.439701 # Your latitude
 MY_LON = -122.715637 # Your longitude
 
@@ -22,7 +24,6 @@ params = {
 
 #class Cache
 import json
-import os
 #
 class Cache():
 
