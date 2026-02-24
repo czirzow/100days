@@ -21,7 +21,8 @@ send an email of news about that stock symbol.
 - start base main.py
   - refacter the Mail() lib i created earlier
   - refacter the Cache() config.
-  - Create the classes to handle marketdata and newsdata
+  - create a basic API class that  marketdata and newsdata inherits
+    - Create the classes to handle marketdata and newsdata
   - include them into the project.
 
 
