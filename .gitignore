@@ -1,5 +1,7 @@
 # I use data/ to save generated content that doesn't need to be committed
 data/
+# and a tmp/ save temporary files there, like cache.
+tmp/
 
 # dont include pycharm config
 .idea/
