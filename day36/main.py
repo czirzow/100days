@@ -1,8 +1,13 @@
-import lib36.apijson as apijson
 
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
+ALERT_PERCENT_CHANGE:float = 0.0
+"""percent of change needed to send an alert
+0 is every time.
+"""
+
+
 
 # TODO: make this: apijson.ApiVantage(ApiJson): 
 import os
@@ -16,8 +21,11 @@ if not VANTAGE_API_KEY:
 
 VANTAGE_API_ENDPOINT = 'https://www.alphavantage.co/query'
 
-DATE_FORMAT = '%Y-%m-%d'
 
+
+
+import lib36.apijson as apijson
+## main
 params = {
         'function': 'TIME_SERIES_DAILY',
         'symbol': STOCK,
@@ -35,6 +43,10 @@ else:
     with open(cache_file, 'r') as fh:
         data = json.load(fh)
 
+
+# Now lets parse this data.....
+#
+DATE_FORMAT = '%Y-%m-%d'
 # {"date"}: {"awkward_names": "value" },
 time_series = data['Time Series (Daily)']
 """ {
@@ -55,29 +67,35 @@ if today not in time_series:
     print(f"no data for: {today}")
     exit(1)
 
-days = 1
-while True:
-    previous_day = (dt.now() - timedelta(days=days)).strftime(DATE_FORMAT)
-    # Just in case the previous_day is a weekend or a holiday
-    if previous_day in time_series:
-        break
-    else:
-        """Market was closed"""
-        pass
-    days += days
 
-# kind of trust the data with float() casting.
+try:
+    days = 1
+    while True:
+        previous_day = (dt.now() - timedelta(days=days)).strftime(DATE_FORMAT)
+        # Just in case the previous_day is a weekend or a holiday
+        if previous_day in time_series:
+            break
+        else:
+            """Market was closed"""
+            pass
+        days += days
+except:
+    """things can go wrong... but shouldn't"""
+    pass
 
-value_tdy = float(time_series[today][close_key])
-value_prv = float(time_series[previous_day][close_key])
+try:
+    # kind of trust the data with float() casting.
+    value_tdy = float(time_series[today][close_key])
+    value_prv = float(time_series[previous_day][close_key])
+except:
+    """things can go wrong... but shouldn't"""
+    pass
 
-def get_percentage(v1, v2):
+def _get_percentage(v1, v2):
     return ((v2 - v1) / v1) * 100
 
-print(today, value_tdy, value_prv, get_percentage(value_tdy, value_prv))
-
-
-
+print(today, value_tdy, value_prv, _get_percentage(value_tdy, value_prv))
+# Just finish up.
 
 
 ## STEP 2: Use https://newsapi.org
