@@ -13,7 +13,7 @@ ALERT_PERCENT_CHANGE:float = 2.0
 import lib36.apijson as apijson
 import os
 import json
-from datetime import datetime as dt, timedelta
+from datetime import datetime, timedelta
 
 ## STEP 1: Use https://www.alphavantage.co
 VANTAGE_API_KEY = os.environ.get('VANTAGE_API_KEY')
@@ -29,9 +29,12 @@ params = {
         'symbol': STOCK,
         'apikey': VANTAGE_API_KEY,
         }
+cache_key= ".".join([i for i in params.values() if i not in [VANTAGE_API_KEY]])
+cache_name = 'vantage'
 
+# we are trusting data at this point..
+cache_file = f"tmp/{cache_name}-{cache_key}.json"
 
-cache_file = f"tmp/vantage-{STOCK}.json"
 if not os.path.exists(cache_file):
     api = apijson.Request(VANTAGE_API_ENDPOINT)
     data = api.call('', params=params)
@@ -42,12 +45,15 @@ else:
         data = json.load(fh)
 
 
-
 ## a fail safe
 TIME_SERIES_DAILY='Time Series (Daily)'
 if not TIME_SERIES_DAILY in data:
-    print("something went wrong.")
+    print(f"something went wrong. see [{cache_file}]")
     exit(1)
+
+# we are ok cache works..
+print("Continue...")
+exit(4)
 
 # Now lets parse this data.....
 #
@@ -67,7 +73,7 @@ time_series = data[TIME_SERIES_DAILY]
 # We want the close values
 close_key = '4. close'
 # 
-today:str = dt.now().strftime(DATE_FORMAT)
+today:str = datetime.now().strftime(DATE_FORMAT)
 if today not in time_series:
     print(f"no data for: {today}")
     exit(1)
@@ -81,7 +87,7 @@ value_prv:float = 0.0
 try:
     days = 1
     while True:
-        previous_day = (dt.now() - timedelta(days=days)).strftime(DATE_FORMAT)
+        previous_day = (datetime.now() - timedelta(days=days)).strftime(DATE_FORMAT)
         # Just in case the previous_day is a weekend or a holiday
         if previous_day in time_series:
             """ all good, we got the value..."""
