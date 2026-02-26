@@ -1,5 +1,12 @@
-#### don't forget to
+
+### setting up environment:
+Ensure you are in venv:
   >source .venv/bin/active
+
+Setup Vantage key:
+  >export VANTAGE_API_KEY=YOURKEY
+
+
 
 
 ## Stocks News Monitoring Project
