@@ -1,138 +1,52 @@
-
-
-STOCK = "TSLA"
-COMPANY_NAME = "Tesla Inc"
-ALERT_PERCENT_CHANGE:float = 2.0
-"""percent of change needed to send an alert
-0 is every time.
-"""
-
-
-
-# TODO: make this: apijson.ApiVantage(ApiJson): 
-import lib36.apijson as apijson
 import os
 import json
-from datetime import datetime, timedelta
+import lib36.apijson as apijson
+import steps.step1 as step1
+## STEP 2: Use https://newsapi.org
+# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
+TODAY='2026-02-26'
+NUM_RESULTS = 3
+SORT_BY = 'popularity'
+NEWSAPI_API_KEY = os.environ.get('NEWSAPI_API_KEY')
+NEWSAPI_ENDPOINT = 'https://newsapi.org/v2/'
+if not NEWSAPI_API_KEY:
+    raise Exception('need to export NEWSAPI_API_KEY=YourKey')
 
-## STEP 1: Use https://www.alphavantage.co
-VANTAGE_API_KEY = os.environ.get('VANTAGE_API_KEY')
-if not VANTAGE_API_KEY:
-    raise Exception('need to export VANTAGE_API_KEY')
-
-VANTAGE_API_ENDPOINT = 'https://www.alphavantage.co/query'
-
-
-## main
+# request:
+# https://newsapi.org/v2/everything
+#     q=step1.COMPANY_NAME
+#     from=today
+#     sortBy=popularity
+#     pageSize=3
+#     apiKey=NEWSAPI_API_KEY
+uri = 'everything'
 params = {
-        'function': 'TIME_SERIES_DAILY',
-        'symbol': STOCK,
-        'apikey': VANTAGE_API_KEY,
+        'q': step1.COMPANY_NAME,
+        'from': TODAY,
+        'sortBy': SORT_BY,
+        'pageSize': NUM_RESULTS,
+        'apiKey': NEWSAPI_API_KEY
         }
-cache_key= ".".join([i for i in params.values() if i not in [VANTAGE_API_KEY]])
-cache_name = 'vantage'
 
-# we are trusting data at this point..
+cache_name = 'newsapi'
+exclude_keys = [NEWSAPI_API_KEY]
+cache_key= ".".join([i for i in params.values() if i not in [NEWSAPI_API_KEY]])
 cache_file = f"tmp/{cache_name}-{cache_key}.json"
 
 if not os.path.exists(cache_file):
-    api = apijson.Request(VANTAGE_API_ENDPOINT)
-    data = api.call('', params=params)
+    api = apijson.Request(NEWSAPI_ENDPOINT)
+    data = api.call(uri, params=params)
     with open(cache_file, 'w') as fh:
         json.dump(data, fh, indent=4)
 else:
     with open(cache_file, 'r') as fh:
         data = json.load(fh)
 
-
-## a fail safe
-TIME_SERIES_DAILY='Time Series (Daily)'
-if not TIME_SERIES_DAILY in data:
-    print(f"something went wrong. see [{cache_file}]")
-    exit(1)
-
-# we are ok cache works..
-print("Continue...")
+#TODO: define a simple structure:
+# headline
+# brief
+print(data)
 exit(4)
-
-# Now lets parse this data.....
-#
-DATE_FORMAT = '%Y-%m-%d'
-# {"date"}: {"awkward_names": "value" },
-time_series = data[TIME_SERIES_DAILY]
-""" {
-        "2026-02-20": {
-            "1. open": "255.1950",
-            "2. high": "259.0400",
-            "3. low": "253.8000",
-            "4. close": "257.1600",   # the value we want
-            "5. volume": "4708550"
-        },
-    }
-"""
-# We want the close values
-close_key = '4. close'
-# 
-today:str = datetime.now().strftime(DATE_FORMAT)
-if today not in time_series:
-    print(f"no data for: {today}")
-    exit(1)
-
-
-# TODO: create the list of dates and get the next one
-#       or just do this.... it works.
-previous_day:str = ""
-value_tdy:float = 0.0
-value_prv:float = 0.0
-try:
-    days = 1
-    while True:
-        previous_day = (datetime.now() - timedelta(days=days)).strftime(DATE_FORMAT)
-        # Just in case the previous_day is a weekend or a holiday
-        if previous_day in time_series:
-            """ all good, we got the value..."""
-            break
-        else:
-            """Market was closed"""
-            pass
-        days += days
-except:
-    """things can go wrong... but shouldn't"""
-    pass
-
-try:
-    # kind of trust the data with float() casting.
-    value_tdy = float(time_series[today][close_key])
-    value_prv = float(time_series[previous_day][close_key])
-except:
-    """things can go wrong... but shouldn't"""
-    pass
-
-def _get_percentage(v1, v2):
-    return ((v2 - v1) / v1) * 100
-
-percentage = _get_percentage(value_tdy, value_prv)
-#debug:
-print(today, value_tdy, value_prv, percentage)
-
-# Just finish up percentage value against ALERT_PERCENT_CHANGE
-if ALERT_PERCENT_CHANGE > percentage < ALERT_PERCENT_CHANGE:
-    ## no alert needed..
-    print(f"no alert percentage[{percentage}]")
-    exit(2)
-else:
-    print(f"alert percentage[{percentage}]")
-
-
-exit(3)
-
-## STEP 2: Use https://newsapi.org
-NEWSAPI_API_KEY = os.environ.get('VANTAGE_API_KEY')
-VANTAGE_API_ENDPOINT = 'https://www.alphavantage.co/query'
-if not NEWSAPI_API_KEY:
-    raise Exception('need to export VANTAGE_API_KEY')
-
-# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
