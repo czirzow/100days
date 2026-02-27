@@ -6,7 +6,8 @@ Ensure you are in venv:
 Setup Vantage key:
   >export VANTAGE_API_KEY=YOURKEY
 
-
+Setup newsapi key:
+  >export NEWSAPI_API_KEY=YOURKEY
 
 
 ## Stocks News Monitoring Project
