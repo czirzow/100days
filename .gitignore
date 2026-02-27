@@ -2,6 +2,9 @@
 data/
 # and a tmp/ save temporary files there, like cache.
 tmp/
+#secured environtment values
+my_env
+
 
 # dont include pycharm config
 .idea/
