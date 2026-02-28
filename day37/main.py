@@ -1,31 +1,28 @@
+# day37: using the post,put,delete methods
 import requests
 import os
 from datetime import datetime as dt, timezone
-#import lib37.apijson as api
-# using the post method:
-
-
-
 
 PIXELA_USERNAME=os.environ.get('pixela_username')
 PIXELA_TOKEN=os.environ.get('pixela_token')
 if PIXELA_USERNAME == '' or PIXELA_TOKEN == '':
         raise Exception("Must set the PIXELA_ environment vars")
 
+# translate color names
 PIXELA_COLORS = {
                 'green': 'shibafu',
-                'red': 'shibafu',
+                'red': 'momiji',
                 'blue': 'sora',
                 'yellow': 'ichou',
                 'purple': 'ajisai',
                 'black': 'kuro',
                 }
 
+# note: each entry does not have a slash at the end.
 PIXELA_URL="https://pixe.la"
 PIXEL_URL_USERS = PIXELA_URL + '/v1/users'
 PIXEL_URL_GRAPHS = PIXELA_URL + f"/v1/users/{PIXELA_USERNAME}/graphs"
 
-MY_GRAPH_ID = 'graph1'
 
 if 0:
         # Create a user
@@ -40,6 +37,7 @@ if 0:
         print(resp.text)
 
 
+MY_GRAPH_ID = 'graph1'
 AUTH_HEADERS = {'X-USER-TOKEN': PIXELA_TOKEN}
 if 0:
         # Create a graph
@@ -82,7 +80,6 @@ if 0:
         url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}/{MY_DATE}"
         resp = requests.delete(url=url, headers=AUTH_HEADERS)
         print(resp.text)
-
 
 
 
