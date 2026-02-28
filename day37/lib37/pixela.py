@@ -40,7 +40,7 @@ class ApiPixela():
         """ format: YYYYMMDD """
         self.date = date
 
-    def create_user(self) -> str:
+    def create_user(self) -> dict:
         # Create a user
         url = self.url_for_users()
         params = {
@@ -49,14 +49,11 @@ class ApiPixela():
                 'agreeTermsOfService': 'yes',
                 'notMinor': 'yes',
                 }
-        return requests.post(url=url, json=params).text
+        return requests.post(url=url, json=params).json()
 
-    def create_graph(self, id:str, name:str, unit:str, type:str, color:str = 'green') -> str:
+    def create_graph(self, id:str, name:str, unit:str, type:str, color:str = 'green') -> dict:
         # Create a graph
         url = self.url_for_graphs()
-
-        # TODO: make just a graph_config:dict that is passed instead of all the params
-        # move this to caller.
         graph_config = {
                         'id': id,
                         'name': name,
@@ -65,8 +62,32 @@ class ApiPixela():
                         'color': self.color_table[color],
                         }
         return requests.post(url=url, json=graph_config, 
-                             headers=self.auth_headers()).text
+                             headers=self.auth_headers()).json()
 
+    def add_pixel(self, graphid:str, quantity:str) -> dict:
+        # Add new pixel
+        url = self.url_for_graphs() + f"/{graphid}"
+        report_data = {
+                        'date': self.date,
+                        'quantity': f"{quantity}",
+                       }
+        return requests.post(url=url, json=report_data, 
+                             headers=self.auth_headers()).json()
+
+    def update_pixel(self, graphid:str, amount:str) -> dict:
+        # Update a pixel
+        url = self.url_for_graphs() + f"/{graphid}/{self.date}"
+        report_data = {
+                        'date': self.date,
+                        'quantity': f"{amount}",
+                       }
+        return requests.put(url=url, json=report_data, 
+                            headers=self.auth_headers()).json()
+
+    def delete_pixel(self, graphid:str, date:str) -> dict:
+        # Delete a pixel
+        url = self.url_for_graphs() + f"/{graphid}/{self.date}"
+        return requests.delete(url=url, headers=self.auth_headers()).json()
 
 # The test run:
 username = str(os.environ.get('pixela_username'))
@@ -86,36 +107,3 @@ if 0:
 exit()
 
 
-"""
-if 0:
-    MY_DATE = str(dt.now(timezone.utc).strftime('%Y%m%d'))
-    def add_pixel(report_data):
-        # Add new pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}"
-        report_data = {
-                        'date': MY_DATE,
-                        'quantity': "10",
-                       }
-        resp = requests.post(url=url, json=report_data, headers=AUTH_HEADERS)
-        print(resp.text)
-
-if 0:
-    def update_pixel(report_data: dict)
-        # Update a pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}/{MY_DATE}"
-        report_data = {
-                        'date': MY_DATE,
-                        'quantity': "15",
-                       }
-        resp = requests.put(url=url, json=report_data, headers=AUTH_HEADERS)
-        print(resp.text)
-
-if 0:
-    def delete_pixel():
-        # Delete a pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}/{MY_DATE}"
-        resp = requests.delete(url=url, headers=AUTH_HEADERS)
-        print(resp.text)
-
-
-"""
