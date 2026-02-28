@@ -1,7 +1,10 @@
+import steps.step1 as step1
+
 import os
 import json
 import lib36.apijson as apijson
-import steps.step1 as step1
+
+print(step1.COMPANY_NAME)
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 TODAY='2026-02-26'
@@ -42,7 +45,7 @@ else:
     with open(cache_file, 'r') as fh:
         data = json.load(fh)
 
-#TODO: define a simple structure:
+#TODO: define a simple structure
 # headline
 # brief
 print(data)

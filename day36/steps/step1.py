@@ -1,4 +1,4 @@
-# TODO: make this: apijson.ApiVantage(ApiJson): 
+# TODO: make this: apijson.ApiVantage(ApiJson):?
 import lib36.apijson as apijson
 import os
 import json
@@ -27,8 +27,10 @@ params = {
 cache_key= ".".join([i for i in params.values() if i not in [VANTAGE_API_KEY]])
 cache_name = 'vantage'
 
-# we are trusting data at this point..
+
 cache_file = f"tmp/{cache_name}-{cache_key}.json"
+
+
 
 if not os.path.exists(cache_file):
     api = apijson.Request(VANTAGE_API_ENDPOINT)
