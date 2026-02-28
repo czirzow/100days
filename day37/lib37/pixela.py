@@ -20,10 +20,9 @@ class ApiPixela():
 
     valid_uris = ('users', 'graphs')
 
-    def __init__(self, token:str, username:str) -> None:
+    def __init__(self, token:str, username:str, date:str = '') -> None:
         self.token = token
         self.username = username
-        self.date = str(dt.now(timezone.utc).strftime('%Y%m%d'))
 
     def url_for_users(self):
         return PIXELA_URL + '/v1/users'
@@ -33,7 +32,6 @@ class ApiPixela():
 
     def auth_headers(self) -> dict:
         return {'X-USER-TOKEN': self.token}
-
 
     def get_date(self) -> str:
         return self.date
@@ -76,7 +74,7 @@ token = str(os.environ.get('pixela_token'))
 if username == '' or token == '':
     raise Exception("Must set the pixela_ environment vars")
 pixela = ApiPixela(token, username) 
-if 1:
+if 0:
     print(pixela.url_for_users())
     print(pixela.url_for_graphs())
 
@@ -90,6 +88,7 @@ exit()
 
 """
 if 0:
+    MY_DATE = str(dt.now(timezone.utc).strftime('%Y%m%d'))
     def add_pixel(report_data):
         # Add new pixel
         url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}"
