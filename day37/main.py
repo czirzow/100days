@@ -1,85 +1,60 @@
 # day37: using the post,put,delete methods
-import requests
 import os
 from datetime import datetime as dt, timezone
-
-PIXELA_USERNAME=os.environ.get('pixela_username')
-PIXELA_TOKEN=os.environ.get('pixela_token')
-if PIXELA_USERNAME == '' or PIXELA_TOKEN == '':
-        raise Exception("Must set the PIXELA_ environment vars")
-
-# translate color names
-PIXELA_COLORS = {
-                'green': 'shibafu',
-                'red': 'momiji',
-                'blue': 'sora',
-                'yellow': 'ichou',
-                'purple': 'ajisai',
-                'black': 'kuro',
-                }
-
-# note: each entry does not have a slash at the end.
-PIXELA_URL="https://pixe.la"
-PIXEL_URL_USERS = PIXELA_URL + '/v1/users'
-PIXEL_URL_GRAPHS = PIXELA_URL + f"/v1/users/{PIXELA_USERNAME}/graphs"
+from pprint import pprint
 
 
-if 0:
-        # Create a user
-        url = PIXEL_URL_USERS
-        params = {
-                        'token': PIXELA_TOKEN,
-                        'username': PIXELA_USERNAME,
-                        'agreeTermsOfService': 'yes',
-                        'notMinor': 'yes',
-                }
-        resp = requests.post(url=url, json=params)
-        print(resp.text)
+import lib37.pixela as pixela
+
+# debug logic Oddly valued..
+#    there is a reason.
+UNTESTED = False
+TESTED = False
+TEST = True
 
 
-MY_GRAPH_ID = 'graph1'
-AUTH_HEADERS = {'X-USER-TOKEN': PIXELA_TOKEN}
-if 0:
-        # Create a graph
-        url = PIXEL_URL_GRAPHS
-        graph_config = {
-                        'id': MY_GRAPH_ID,
-                        'name': 'Programming Graph',
-                        'unit': 'commit',
-                        'type': 'int',
-                        'color': PIXELA_COLORS['green'],
-                        'description': 'keep track of when work on code.',
-                        }
-        resp = requests.post(url=url, json=graph_config, headers=AUTH_HEADERS)
-        print(resp.text)
+username = str(os.environ.get('pixela_username'))
+token = str(os.environ.get('pixela_token'))
+if username == '' or token == '':
+        raise Exception("Must set the pixela_username and pixela_token environment vars")
+
+DATE = str(dt.now(timezone.utc).strftime('%Y%m%d'))
 
 
-MY_DATE = str(dt.now(timezone.utc).strftime('%Y%m%d'))
-if 0:
-        # Add new pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}"
-        report_data = {
-                        'date': MY_DATE,
-                        'quantity': "10",
-                       }
-        resp = requests.post(url=url, json=report_data, headers=AUTH_HEADERS)
-        print(resp.text)
+GRAPH_ID = 'work_on_import'
+GRAPH_NAME = 'Times i work on import script'
 
-if 0:
-        # Update a pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}/{MY_DATE}"
-        report_data = {
-                        'date': MY_DATE,
-                        'quantity': "15",
-                       }
-        resp = requests.put(url=url, json=report_data, headers=AUTH_HEADERS)
-        print(resp.text)
+pixela_api = pixela.ApiPixela(username=username, token=token, date=DATE)
+# TODO:
+#  there is an abilty to set the date with object. 
+#     > pixela_api.set_date('20220131') 
+#  setup up a test for that.
 
-if 0:
-        # Delete a pixel
-        url = PIXEL_URL_GRAPHS + f"/{MY_GRAPH_ID}/{MY_DATE}"
-        resp = requests.delete(url=url, headers=AUTH_HEADERS)
-        print(resp.text)
+
+
+if UNTESTED:
+    # create a user
+    pprint(pixela_api.create_user())
+
+
+if UNTESTED:
+    # Create a graph
+    pprint(pixela_api.create_graph(id=GRAPH_ID, name=GRAPH_NAME, 
+                                   unit='num', type='int', color='red')
+           )
+
+if UNTESTED:
+    # Add new pixel
+    pprint( pixela_api.add_pixel(GRAPH_ID, "10"))
+
+
+if UNTESTED:
+    # Update a pixel
+    pprint(pixela_api.update_pixel(GRAPH_ID, "30"))
+
+if UNTESTED:
+    # Delete a pixel
+    pprint(pixela_api.delete_pixel(GRAPH_ID))
 
 
 
