@@ -7,7 +7,7 @@ class ApiNutrition:
         self.app_id = app_id
         self.app_key = app_key
     
-    def url_exersize(self) -> str:
+    def url_exercise(self) -> str:
         return NUTRITION_API_BASE + "/v1/nutrition/natural/exercise"
 
     def url_healthz(self) -> str:
@@ -40,11 +40,11 @@ class ApiNutrition:
 
         return resp.json()
      
-    def exersize(self, activity:str) -> dict:
+    def exercise(self, activity:str) -> dict:
         params = {
                 'query': activity,
                 }
-        return self._post(url=self.url_exersize(), json=params)
+        return self._post(url=self.url_exercise(), json=params)
 
     def healthz(self) -> dict:
         return self._request(url=self.url_healthz())
