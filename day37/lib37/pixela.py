@@ -86,24 +86,6 @@ class ApiPixela():
 
     def delete_pixel(self, graphid:str, date:str) -> dict:
         # Delete a pixel
-        url = self.url_for_graphs() + f"/{graphid}/{self.date}"
+        url = self.url_for_graphs() + f"/{graphid}/{date}"
         return requests.delete(url=url, headers=self.auth_headers()).json()
-
-# The test run:
-username = str(os.environ.get('pixela_username'))
-token = str(os.environ.get('pixela_token'))
-if username == '' or token == '':
-    raise Exception("Must set the pixela_ environment vars")
-pixela = ApiPixela(token, username) 
-if 0:
-    print(pixela.url_for_users())
-    print(pixela.url_for_graphs())
-
-# test these:
-#
-#print(pixela.create_user())
-# 
-#print(pixela.create_graph())
-exit()
-
 
