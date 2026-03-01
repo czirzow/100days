@@ -14,4 +14,6 @@ See [Nutrition API](https://app.100daysofpython.dev/services/nutrition/docs) for
 ```
 export nutrition_app_id=YOUR_GENERATED_ID
 export nutrition_app_key=YOUR_GENERATED_KEY
+export sheety_key=KEY_FROM_SHEETY
 ```
+
