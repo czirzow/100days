@@ -1,5 +1,5 @@
 # day 
-import json, os
+import os
 from lib38.nutrition import ApiNutrition
 from lib38.sheety import Sheety
 from lib38.workout import Workout
@@ -52,6 +52,11 @@ if False:
             'time': '17:24:05'
             }
     sheety.update('workouts', workout['id'], workout)
+    cache_sheety.clear()
+
+if False:
+    """test delete an item"""
+    print(sheety.delete('workouts', 2))
     cache_sheety.clear()
 
 

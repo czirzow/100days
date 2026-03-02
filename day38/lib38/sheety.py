@@ -26,7 +26,7 @@ class Sheety:
               exit(1)
         return resp.json()
 
-    def update(self, sheet:str, id:int, workout:dict):
+    def update(self, sheet:str, id:int, workout:dict) -> dict:
         url = self.url(sheet) + f"/{id}"
         json = { 'workout': workout }
         resp = requests.put(url=url, json=json)
@@ -36,4 +36,13 @@ class Sheety:
               print(f"Failed request: {e}")
               exit(1)
         return resp.json()
+
+    def delete(self, sheet:str, id:int) -> None:
+        url = self.url(sheet) + f"/{id}"
+        resp = requests.delete(url=url)
+        try:
+              resp.raise_for_status()
+        except requests.exceptions.RequestException as e:
+              print(f"Failed request: {e}")
+              exit(1)
 
