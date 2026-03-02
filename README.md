@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 
 ### Days of Interest
-* [Day 39](days39/README.md) - Cheap Flight Finder.
+* [Day 39](day39/README.md) - Cheap Flight Finder.
 * [Day 38](day38/README.md) - work with [Sheety API](https://sheety.co) and
                             [NutritionApi](https://app.100daysofpython.dev/services/nutrition/docs)
 * [Day 37](day37/README.md) - work on post, put, delete
