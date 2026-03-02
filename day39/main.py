@@ -5,5 +5,9 @@
 #from flightlib.flight_search import FlightSearch
 #from flightlib.notification_manager import NotificationManager
 
-from lib39.apirequest import ApiRequest
-api = ApiRequest()
+from lib39.apirequest import ApiRequestJson
+
+
+#this fails
+api = ApiRequestJson('http://google.com')
+api.get()
