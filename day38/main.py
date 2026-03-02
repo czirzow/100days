@@ -7,11 +7,12 @@ from lib38.cache import Cache
 
 from pprint import pprint
 
-sheety_key = os.environ.get('sheety_key')
-app_key = os.environ.get('nutrition_app_key')
-app_id = os.environ.get('nutrition_app_id')
-if not (app_key and app_id and sheety_key):
-    raise Exception("Must setup environment for app_key and app_id and sheety_key")
+try:
+    sheety_key = os.environ['sheety_key']
+    app_key = os.environ['nutrition_app_key']
+    app_id = os.environ['nutrition_app_id']
+except KeyError:
+    raise Exception("Must setup environment for app_key and app_id and sheety_key, see README")
 
 # avoid hitting the api while testing.
 cache_sheety = Cache('tmp/cache_sheety_results.json')
