@@ -1,18 +1,10 @@
+## Day 37
 
-be sure to 
-```
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
+### Overview
+I first created everything in [main.py](main.py) then created [ApiPixela](lib37/pixela.py)
+that works with [Pixela](https://pixe.la/). main.py ended up being a test unit that hasn't 
+been fully tested.
 
 ### TODO:
-~~convert main.py to a class.~~
-
-
-### Done:
-I created a pixela class. see main.py
-
-### Next steps
-  . test the calls.
+* test the calls.
 
