@@ -15,6 +15,25 @@ class Sheety:
     def get(self, sheet:str):
         return requests.get(url=self.url(sheet)).json()
 
-    def add(self):
-        pass
+    def add(self, sheet:str, workout:dict):
+        url = self.url(sheet)
+        json = { 'workout': workout }
+        resp = requests.post(url=url, json=json)
+        try:
+              resp.raise_for_status()
+        except requests.exceptions.RequestException as e:
+              print(f"Failed request: {e}")
+              exit(1)
+        return resp.json()
+
+    def update(self, sheet:str, id:int, workout:dict):
+        url = self.url(sheet) + f"/{id}"
+        json = { 'workout': workout }
+        resp = requests.put(url=url, json=json)
+        try:
+              resp.raise_for_status()
+        except requests.exceptions.RequestException as e:
+              print(f"Failed request: {e}")
+              exit(1)
+        return resp.json()
 

@@ -17,4 +17,8 @@ class Cache:
         with open(self.cache_file, 'w') as fp:
             json.dump(fp=fp, obj=results, indent=4)
 
+    def clear(self):
+        """clears the cache"""
+        if self.is_cached():
+            os.remove(self.cache_file)
 
