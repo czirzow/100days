@@ -18,7 +18,7 @@ class ApiRequestJson():
         try:
             resp.raise_for_status()
 
-        # TODO: are there specific exceptions i would like to catch? and not exit
+        # TODO: are there specific exceptions i would like to catch?
         except req.exceptions.RequestException as e:
             raise ApiRequstError(f"Failed request: {e}")
 
