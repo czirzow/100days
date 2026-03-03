@@ -7,11 +7,10 @@ from flightlib.flight_search import FlightSearch
 
 #
 # TODO: start testing this..
-#from lib39.apirequest import ApiRequestJson
-# it basically does a try catch for calls.
-    # this fails since it is not json.
-    # api = ApiRequestJson('http://google.com')
-    # api.get()
+#   from lib39.apiclient import ApiClient
+# it catches then throws common exceptions 
+# in main code that uses ApiClient()
+# 
 
 import os
 from dotenv import load_dotenv
@@ -40,7 +39,6 @@ except KeyError:
 #  makes no sense.
 SHEET = 'price'
 sheety = Sheety(key=sheety_key, project='flightDeals')
-
 data_manager = DataManager(sheety)
 
 
