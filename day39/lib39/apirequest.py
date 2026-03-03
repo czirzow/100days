@@ -1,5 +1,11 @@
 #filename: apirequests.py
 
+##
+# This seems like a lot of work to just handle what happens
+# in a requests.request() call
+# perhaps... I should do some research on a good library..
+# Found it... stand by, a rewrite is comming shortly.
+
 import requests as req
 
 class ApiRequstError(Exception):
@@ -14,8 +20,8 @@ class ApiRequestJson():
         self.url = url
 
     def _request(self, method, params:dict, headers:dict) -> dict:
-        resp = method(self.url, params=params, headers=headers)
         try:
+            resp = method(self.url, params=params, headers=headers)
             resp.raise_for_status()
 
         # TODO: are there specific exceptions i would like to catch?
