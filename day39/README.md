@@ -5,7 +5,7 @@ get the cheapest flight available.
 Added the load_dotenv module, so ensure your private keys are all defined in ```.env``` file
 This file should not be committed.
 
-I believe I found a good [ApiClient](lib39/apiclient.py) to use as a base for api clients. see 
+I believe I found a good [ApiClient](lib39/apiclient.py) to use as a base for api clients.
 
 ## Plan
 
