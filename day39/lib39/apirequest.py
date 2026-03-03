@@ -1,66 +1,68 @@
-#filename: apirequests.py
+"""A wrapper to requests"""
+"""Credit to the unknown who created this wrapper for requests"""
 
-##
-# This seems like a lot of work to just handle what happens
-# in a requests.request() call
-# perhaps... I should do some research on a good library..
-# Found it... stand by, a rewrite is comming shortly.
+import requests
+from requests import Response
+from requests.exceptions import RequestException, Timeout, HTTPError
+from typing import Any
 
-import requests as req
 
-class ApiRequstError(Exception):
-    pass
+class ApiClient:
+    def __init__(self, base_url: str, timeout: int = 10):
+        self.base_url = base_url.rstrip("/")
+        self.timeout = timeout
 
-class ApiRequestErrorJson(ApiRequstError):
-    pass
-
-class ApiRequestJson():
-
-    def __init__(self, url):
-        self.url = url
-
-    def _request(self, method, params:dict, headers:dict) -> dict:
+    def _request(
+        self,
+        method: str,
+        endpoint: str,
+        **kwargs: Any
+    ) -> Response:
+        url = f"{self.base_url}/{endpoint.lstrip('/')}"
         try:
-            resp = method(self.url, params=params, headers=headers)
-            resp.raise_for_status()
+            response = requests.request(
+                method=method,
+                url=url,
+                timeout=self.timeout,
+                **kwargs
+            )
 
-        # TODO: are there specific exceptions i would like to catch?
-        except req.exceptions.RequestException as e:
-            raise ApiRequstError(f"Failed request: {e}")
+            # Raises HTTPError for 4xx/5xx
+            response.raise_for_status()
 
-        try:
-            return resp.json()
-        except ValueError as e:
-            raise ApiRequestErrorJson(f"Result was not json: {e}")
+            return response
 
-    def get(self, params: dict | None = None, headers: dict | None = None) -> dict:
-        """requests.get(url, params=None, **kwargs)"""
-        return self._request(req.get, params or {}, headers or {})
+        except Timeout as e:
+            raise RuntimeError(f"Request timed out: {url}") from e
 
-    def post(self, params: dict | None = None, headers: dict | None = None) -> dict:
-        """requests.post(url, data=None, json=None, **kwargs)"""
-        return self._request(req.post, params or {}, headers or {})
+        except HTTPError as e:
+            raise RuntimeError(
+                f"HTTP error {e.response.status_code}: {e.response.text}"
+            ) from e
 
-    def put(self,  params: dict | None = None, headers: dict | None = None) -> dict:
-        """requests.put(url, data=None, **kwargs)"""
-        return self._request(req.put, params or {}, headers or {})
+        except RequestException as e:
+            raise RuntimeError(f"Request failed: {str(e)}") from e
 
-    def delete(self, params: dict | None = None, headers: dict | None = None) -> dict:
-        """requests.delete(url, **kwargs)"""
-        return self._request(req.delete, params or {}, headers or {})
+    # Only expose the common verbs
+    def get(self, endpoint: str, **kwargs: Any) -> Response:
+        return self._request("GET", endpoint, **kwargs)
 
+    def post(self, endpoint: str, **kwargs: Any) -> Response:
+        return self._request("POST", endpoint, **kwargs)
 
-__TEST__ = False
-__test_for__ = None
-#__test__ = 'basic-init-fail'
-if __TEST__:
-    if __test_for__ == None:
-        pass
-    if __test_for__ == 'basic-init-fail':
-        #passed
-        api = ApiRequestJson('https://google.com/')
-        try:
-            resp = api.get()
-        except ApiRequstError as e:
-            print(f"we failed as expected {e}")
+    def put(self, endpoint: str, **kwargs: Any) -> Response:
+        return self._request("PUT", endpoint, **kwargs)
+
+    def delete(self, endpoint: str, **kwargs: Any) -> Response:
+        return self._request("DELETE", endpoint, **kwargs)
+
+# DEBUG:
+if False:
+    client = ApiClient("https://google.com")
+
+    try:
+        response = client.get("/", params={"active": True})
+        print("EXPECT HTML: ", response.text[0:500])
+    except RuntimeError as e:
+        print(f"API error: {e}")
 
