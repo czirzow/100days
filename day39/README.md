@@ -1,5 +1,6 @@
 # Day 39
 get the cheapest flight available.
+Can't do this... the site wont let me create an account.
 
 ### Overview
 Added the load_dotenv module, so ensure your private keys are all defined in ```.env``` file
