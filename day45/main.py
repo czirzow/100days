@@ -37,5 +37,11 @@ print('Winner is', winner_id)
 
 # get the table row that has the information.
 winner = soup.find(name="tr", class_="athing", id=f"{winner_id}")
-print(winner.select_one('a.storylink'))
+a_tag = winner.select_one('a.storylink')
+
+print("The Winner:")
+print("\t", a_tag.getText())
+print("\t", a_tag.get('href'))
+
+
 
