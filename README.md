@@ -10,7 +10,7 @@ pip install -r requirements.txt
 
 
 ### Days of Interest
-* [Day 40](day40/README.md) - 
+* [Day 45](day45/README.md) - Basic html scraping
 * [Day 39](day39/README.md) - Cheap Flight Finder. unable to complete
 * [Day 38](day38/README.md) - work with [Sheety API](https://sheety.co) and
                             [NutritionApi](https://app.100daysofpython.dev/services/nutrition/docs)
