@@ -3,13 +3,12 @@ import hashlib
 
 TMP_DIR = 'tmp/'
 
-def cache_file(url:str, name:str, type:str='json'):
+def cache_file(url:str, name:str, type:str='json', dir:str=TMP_DIR):
     ## this is the __init__() for Cache?
-    tmp_dir:str = TMP_DIR
     #try:
     u = urlparse(url)
     #pprint(u)
-    f = f"{tmp_dir}{u.netloc}.{name}"
+    f = f"{dir}{u.netloc}.{name}"
 
     hashkey:str = f + u.query + u.params
     #try:
