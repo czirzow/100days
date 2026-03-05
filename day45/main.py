@@ -59,8 +59,8 @@ soup = BeautifulSoup(pretty_html, 'html.parser')
 print("Introducting the " + str(soup.title.getText()).strip())
 print("ranked #1 to #100")
 titles = soup.select(selector='div .entity-info-items__list ul li a')
-ranked = [ t.getText().strip() for t in titles ]
-ranked.reverse()
+ranked = [ t.getText().strip() for t in titles ][::-1]
+#ranked.reverse()
 pprint(ranked)
 
 
