@@ -1,4 +1,6 @@
+spotipy
 beautifulsoup4
 lxml
 requests
+dotenv
 
