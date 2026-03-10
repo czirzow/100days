@@ -1,13 +1,18 @@
 import json, os
+from typing import Callable
 
 class Cache:
     """Simple method to cache dict results in a file"""
 
-    def __init__(self, cache_file:str):
+    def __init__(self, cache_file:str, callback: Callable):
         self.cache_file = cache_file
+        self.callback = callback
 
     def is_cached(self) -> bool:
         return os.path.exists(self.cache_file)
+
+    def _get_callback(self):
+         return self.callback()
 
     def clear(self):
         """clears the cache"""
@@ -21,7 +26,7 @@ class CacheFile(Cache):
         with open(self.cache_file, 'r') as fp:
             return fp.read()
 
-    def save(self, data) -> None:
+    def _save(self, data) -> None:
         with open(self.cache_file, 'w') as fp:
             fp.write(data)
 
@@ -31,10 +36,20 @@ class CacheJson(Cache):
     """Use json to save the file"""
 
     def get(self) -> dict:
-        with open(self.cache_file, 'r') as fp:
-            return json.load(fp)
+        if  self.is_cached():
+            print("cached", self.cache_file)
+            with open(self.cache_file, 'r') as fp:
+                results = json.load(fp)
+            return results
+        else:
+            results = self._get_callback()
+            print("results:", type(results))
+            self._save(results)
+            print(results)
+            return results
 
-    def save(self,  results:dict) -> None:
+
+    def _save(self,  results) -> None:
         with open(self.cache_file, 'w') as fp:
             json.dump(fp=fp, obj=results, indent=4)
 
