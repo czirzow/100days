@@ -29,8 +29,12 @@ sp = spotipy.Spotify(
         scope=scope,
         cache_path="data/spotify-token.txt"))
 
-#user_id = sp.current_user()["id"]
-#print(user_id)
+#DEBUG: step back a bit.
+if False:
+    """if things are not working propery"""
+    user_id = sp.current_user()["id"]
+    print(user_id)
+    exit()
 
 # DEBUG: oath is not working.
 if False:
@@ -40,43 +44,47 @@ if False:
     exit()
 
 
-# SPOTIFY is down... so lets comment...
-# and the  rest continues
-
-#drews_music_id = '6hJXWUx16oeGzKp4BkuocY'
-#dews_music = sp.playlist(drews_music_id)
-
-# this is the actual api call.
 from functools import partial
-guitar_songs_id = '2z6LRqzNYbzxOVFdGidDoi'
 
-url = f"https://api.spotify.com/v1/playlists/{guitar_songs_id}/items"
-file = cache_file(url, 'my.guitar.songs')
 
 # setup the call back in the case that we don't have a cache file.
-get_guitar_songs = partial(sp.playlist, guitar_songs_id)
-cache = CacheJson(file, callback=get_guitar_songs)
+"""The playlist id"""
+guitar_songs_id = '2z6LRqzNYbzxOVFdGidDoi'
 
+"""The fields to return from the api call"""
+fields = ['items.item.name',
+          'items.item.id',
+          'items.item.artists.name',
+          'items.item.artists.id',
+          'offset',
+          'total',
+          ]
+
+# configure a callback for the cache if we need to renew data.
+get_guitar_songs = partial(sp.playlist_items, 
+                           guitar_songs_id, 
+                           fields=','.join(fields))
+
+# TODO: be able to render this url from the spotipy requests.url
+# for the time being we fake it and change names as needed. 
+# to cache requests.
+url = f"https://api.spotify.com/v1/playlists/{guitar_songs_id}/items"
+file = cache_file(url, 'my.guitar.songs2')
+
+#print(get_guitar_songs())
+cache = CacheJson(file, callback=get_guitar_songs)
 
 if False:
     # DEBUG: lets make sure the api call works.
     cache.clear()
 
-exit(1)
 
 guitar_songs = cache.get()
-pprint(guitar_songs)
-print(type(guitar_songs))
+exit()
+#pprint(guitar_songs)
+#print(type(guitar_songs))
 # expect the json file results.
 
-exit()
-
-if cache.is_cached():
-    print("Cached!!")
-    guitar_songs = cache.get()
-else:
-    guitar_songs = sp.playlist(guitar_songs_id)
-    cache.save(guitar_songs)
 
 print(guitar_songs['items']['total'])
 
