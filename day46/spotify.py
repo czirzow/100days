@@ -1,19 +1,18 @@
+import os
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
-import os
-from pprint import pprint
 
 from lib46.cache_file import cache_file
 from mylib.cache import CacheJson
 
+from dotenv import load_dotenv
 load_dotenv()
-
-
 CLIENT_ID = os.environ['SPOTIPY_CLIENT_ID']
 CLIENT_SECRET = os.environ['SPOTIPY_CLIENT_SECRET']
-REDIRECT_URI = "https://example.com/"
-scope = "playlist-modify-private,playlist-read-private"
+
+# 
+REDIRECT_URI = "http://localhost/"
+SPTY_SCOPE = "playlist-modify-private,playlist-read-private"
 
 
 # A thought: since we will be caching results
@@ -26,9 +25,11 @@ sp = spotipy.Spotify(
         client_id=CLIENT_ID,
         client_secret=CLIENT_SECRET,
         redirect_uri=REDIRECT_URI,
-        scope=scope,
+        scope=SPTY_SCOPE,
         cache_path="data/spotify-token.txt"))
 
+
+from pprint import pprint
 #DEBUG: step back a bit.
 if False:
     """if things are not working propery"""
