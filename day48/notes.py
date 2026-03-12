@@ -18,17 +18,19 @@ if False:
     #/html/body/div
     element = driver.find_element(By.XPATH, value='/html/body/div')
 
-# quiz 
-driver.get('https://python.org/')
+if True:
+    # quiz
+    driver.get('https://python.org/')
 
-latest_news = driver.find_element(By.CLASS_NAME, value="shrubbery")
-news_items = latest_news.find_elements(By.TAG_NAME, 'li')
-#pprint(news_items)
-for item in news_items:
-    time_tag = item.find_element(By.TAG_NAME, value='time')
-    a_tag = item.find_element(By.TAG_NAME, value='a')
-    print(time_tag.get_attribute('datetime'), a_tag.text)
-    # TODO: make the dict converting the datetime value as well.
+    # I like the name shrubbery... Knights who say "Ni!"
+    latest_news = driver.find_element(By.CLASS_NAME, value="shrubbery")
+    news_items = latest_news.find_elements(By.TAG_NAME, 'li')
+    #pprint(news_items)
+    for item in news_items:
+        time_tag = item.find_element(By.TAG_NAME, value='time')
+        a_tag = item.find_element(By.TAG_NAME, value='a')
+        print(time_tag.get_attribute('datetime'), a_tag.text)
+        # TODO: make the dict converting the datetime value as well.
 
 
 
