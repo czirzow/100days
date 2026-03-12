@@ -19,6 +19,7 @@ if False:
     element = driver.find_element(By.XPATH, value='/html/body/div')
 
 if True:
+    from datetime import datetime as dt
     # quiz
     driver.get('https://python.org/')
 
@@ -26,12 +27,18 @@ if True:
     latest_news = driver.find_element(By.CLASS_NAME, value="shrubbery")
     news_items = latest_news.find_elements(By.TAG_NAME, 'li')
     #pprint(news_items)
+    i = 0
+    events = {}
     for item in news_items:
         time_tag = item.find_element(By.TAG_NAME, value='time')
         a_tag = item.find_element(By.TAG_NAME, value='a')
-        print(time_tag.get_attribute('datetime'), a_tag.text)
-        # TODO: make the dict converting the datetime value as well.
-
+        #print(time_tag.get_attribute('datetime'), a_tag.text)
+        events[i] = {
+                'time': dt.fromisoformat(time_tag.get_attribute('datetime')).strftime('%Y-%m-%d'),
+                'news': a_tag.text,
+                }
+        i += 1
+    pprint(events)
 
 
 # driver.close()
