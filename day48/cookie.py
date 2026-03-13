@@ -7,10 +7,8 @@ from time import sleep, time
 # debug...
 from pprint import pprint
 
-
-
 class CookieMonster:
-    """He does just goble up cookies
+    """He does just gobble up cookies
     The more cookies you eat the more you make.
     """
 
@@ -18,6 +16,9 @@ class CookieMonster:
         self.driver = driver
         self.lang = lang
         try:
+            # I cheated on this, that damn langSlect-EN would never work.
+            # it was all about the sleeping
+            sleep(3)
             language_button = self.driver.find_element(by=By.ID, value=f"langSelect-{self.lang}")
             language_button.click()
         except NoSuchElementException:
@@ -60,11 +61,11 @@ chrome_options.add_experimental_option("detach", True)
 driver = webdriver.Chrome(options=chrome_options)
 driver.get(url)
 
-# FIXME: I believe we can figure out a state on when to continue instead of sleeping
-sleep(3) # wait page load javascript
 
 # Sid: The original name for Cookie Monster by Jim Henson in the late 1960's
 Sid = CookieMonster(driver, lang='EN')
+
+# FIXME: I believe we can figure out a state on when to continue instead of sleeping
 # FIXME: We have to wait for javascript to set things up.0
 sleep(3) # wait for javascript.
 
