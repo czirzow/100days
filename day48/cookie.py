@@ -31,10 +31,11 @@ class CookieMonster:
         cookies = self.driver.find_element(by=By.ID, value="cookies")
         return int(cookies.text.split(' ')[0].replace(',', ''))
 
+    # general names of action here:
     def eat(self, cookie):
         cookie.click()
 
-    def gobble(self, qty:int = 1):
+    def gobble(self, qty:int = 356):
         # I only get this here cause i'm not sure if it changes
         cookie = self.get_cookie()
         i = 0
@@ -48,6 +49,8 @@ class CookieMonster:
             sleep(0.003) # lets breath a moment.
 
 
+
+# Main
 
 url = 'https://ozh.github.io/cookieclicker/'
 
@@ -69,8 +72,9 @@ cookies_to_eat = 15
 Sid.gobble(cookies_to_eat)
 # Now... lets start getting the upgrades to increase per Sec.
 # buy a click. at 15.
-# recalculate cookies_to_eat to the next level.
+#    recalculate cookies_to_eat to the next level.
 # get what is available and upgrade top down.
+# or bottom up? who knows.
 
 
 
