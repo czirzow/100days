@@ -44,7 +44,6 @@ class CookieMonster:
         except StaleElementReferenceException:
             """Just ignore this.. we will get it at some point."""
             pass
-
         return self.cookies_per_sec
 
     def get_products(self):
@@ -58,19 +57,35 @@ class CookieMonster:
     def eat(self, cookie):
         cookie.click()
 
-    def gobble(self, seconds:float = 1.0):
+    def gobble(self, how_many: int = 100, for_how_long: float = 1.0):
+        """
+        Eat cookies until a limit is reached.
+
+        Args:
+            how_many (int): Number of cookies to eat.
+            for_how_long (float): Number of seconds to run.
+
+        Returns:
+            None
+        """
+
         # I only get this here cause i'm not sure if it changes
         cookie = self.get_cookie()
         start = time()
-        while time() - start <= seconds:
+        while how_many > 0:
+            if time() - start >= for_how_long:
+                # no need to continue
+                break
+            how_many -= 1
             self.eat(cookie)
+
             # DEBUG: 
             #sleep(0.003) # lets breath a moment.
 
 
 
 # Main
-
+#----------
 
 url = 'https://ozh.github.io/cookieclicker/'
 
@@ -94,8 +109,8 @@ start = time()
 our_per_second = 24.0
 cookies_to_eat = 15
 while time() - start <= run_for:
-    time_to_eat = our_per_second / cookies_to_eat
-    Sid.gobble(time_to_eat)
+    time_to_eat = (our_per_second + Sid.get_per_second()) / cookies_to_eat
+    Sid.gobble(how_many=cookies_to_eat, for_how_long=time_to_eat)
 
     upgrades = Sid.get_upgrades()
     for upgrade in upgrades:
