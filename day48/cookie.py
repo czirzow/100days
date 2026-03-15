@@ -57,7 +57,7 @@ class CookieMonster:
     def eat(self, cookie):
         cookie.click()
 
-    def gobble(self, how_many: int = 100, for_how_long: float = 1.0):
+    def gobble(self, how_many: int = 100, for_how_long: float = 5.0):
         """
         Eat cookies until a limit is reached.
 
@@ -113,10 +113,11 @@ while time() - start <= run_for:
     Sid.gobble(how_many=cookies_to_eat, for_how_long=time_to_eat)
 
     upgrades = Sid.get_upgrades()
-    for upgrade in upgrades:
+    for upgrade in upgrades[::-1]:
         try:
             upgrade.click()
             print('upgrade')
+            break
         except StaleElementReferenceException:
             """Just ignore this.. we will get it at some point."""
             print('missed upgrade')
@@ -127,6 +128,7 @@ while time() - start <= run_for:
         product.click()
         cookies_to_eat = int(product.find_element(By.CLASS_NAME, value="price").text.replace(',', ''))
         print(cookies_to_eat, Sid.get_per_second())
+        break
 
 
     #sleep(0.5)
