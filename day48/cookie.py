@@ -16,6 +16,7 @@ class Asdf():
         pass
 
 class SidsBrain:
+    # Sids brain
 
     def __init__(self, driver, lang='DE'):
 
@@ -75,7 +76,7 @@ class CookieMonster(SidsBrain):
         self.cookie = self.get_cookie()
 
     # general names of action here:
-    def _eat(self):
+    def _eat_cookie(self):
        """ eat a cookie """
        self.cookie.click()
 
@@ -103,8 +104,8 @@ class CookieMonster(SidsBrain):
             if time() - start >= for_how_long:
                 # no need to continue
                 return
+            self._eat_cookie()
             how_many -= 1
-            self._eat()
 
             # DEBUG: 
             #sleep(0.003) # lets breath a moment.
@@ -153,7 +154,7 @@ while time() - start <= RUN_FOR:
     if False:
         Sid.want_more_cookies()
     else:
-        # move to want_more_cookies()
+        # rethink and move to want_more_cookies()
         upgrades = Sid.get_upgrades()
         for upgrade in upgrades[::-1]:
             try:
