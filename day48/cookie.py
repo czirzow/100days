@@ -32,8 +32,12 @@ class CookieMonster:
         return self.driver.find_element(by=By.ID, value="bigCookie")
 
     def num_cookies(self):
-        cookies = self.driver.find_element(by=By.ID, value="cookies")
-        self.cookies = int(cookies.text.split(' ')[0].replace(',', ''))
+        try:
+            cookies = self.driver.find_element(by=By.ID, value="cookies")
+            self.cookies = int(cookies.text.split(' ')[0].replace(',', ''))
+        except StaleElementReferenceException:
+            """Just ignore this.. we will get it at some point."""
+            pass
         return self.cookies
 
     def get_per_second(self):
@@ -75,7 +79,7 @@ class CookieMonster:
         while how_many > 0:
             if time() - start >= for_how_long:
                 # no need to continue
-                break
+                return
             how_many -= 1
             self.eat(cookie)
 
@@ -97,19 +101,26 @@ driver.get(url)
 
 
 # Sid: The original name for Cookie Monster by Jim Henson in the late 1960's
-Sid = CookieMonster(driver, lang='EN')
+Sid = CookieMonster(driver, lang='DE')
 
 # FIXME: I believe we can figure out a state on when to continue instead of sleeping
 # FIXME: We have to wait for javascript to set things up.0
 sleep(2) # wait for javascript.
 
-run_for = 300
+run_for = 600
 start = time()
 
 our_per_second = 24.0
 cookies_to_eat = 15
 while time() - start <= run_for:
-    time_to_eat = (our_per_second + Sid.get_per_second()) / cookies_to_eat
+    elapsed_time = round(time() - start)
+    
+    total_rate = round(our_per_second + Sid.get_per_second(), 2)
+    estimated_time = round(cookies_to_eat/total_rate, 2)
+    time_to_eat = estimated_time #( Sid.get_per_second()) / cookies_to_eat
+    print(elapsed_time, Sid.num_cookies(), f"eat {cookies_to_eat} for {time_to_eat}")
+    print(Sid.get_per_second(), total_rate, estimated_time)
+
     Sid.gobble(how_many=cookies_to_eat, for_how_long=time_to_eat)
 
     upgrades = Sid.get_upgrades()
@@ -127,13 +138,15 @@ while time() - start <= run_for:
     for product in products[::-1]:
         product.click()
         cookies_to_eat = int(product.find_element(By.CLASS_NAME, value="price").text.replace(',', ''))
-        print(cookies_to_eat, Sid.get_per_second())
         break
+    # in case we have access of cookies
+    #cookies_to_eat -= Sid.num_cookies()
 
 
     #sleep(0.5)
     #product.click()
-
+print("Cookies per second", Sid.get_per_second())
+Sid.get_per_second()
 
 # Now... lets start getting the upgrades to increase per Sec.
 # buy a click. at 15.
