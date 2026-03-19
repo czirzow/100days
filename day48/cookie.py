@@ -56,11 +56,11 @@ class SidsBrain:
             pass
         return self.cookies_per_sec
 
-    def get_products(self):
-       return self.driver.find_elements(by=By.CSS_SELECTOR, value=".product.unlocked.enabled")
+    def get_products(self, mode='enabled'):
+       return self.driver.find_elements(by=By.CSS_SELECTOR, value=f".product.unlocked.{mode}")
 
-    def get_upgrades(self):
-       return self.driver.find_elements(by=By.CSS_SELECTOR, value=".crate.upgrade.enabled")
+    def get_upgrades(self, mode='enabled'):
+       return self.driver.find_elements(by=By.CSS_SELECTOR, value=f".crate.upgrade.{mode}")
 
 
 class CookieMonster(SidsBrain):
@@ -84,7 +84,30 @@ class CookieMonster(SidsBrain):
         return(0, 0)
 
     def want_more_cookies(self):
-        pass
+        # TODO: rethink 
+        cookies_to_eat = 15
+        upgrades = self.get_upgrades(mode='enabled')
+        for upgrade in upgrades[::-1]:
+            try:
+                upgrade.click()
+                print('upgrade')
+                break
+            except StaleElementReferenceException:
+                """Just ignore this.. we will get it at some point."""
+                print('missed upgrade')
+                pass
+
+        products = self.get_products()
+        for product in products[::-1]:
+            product.click()
+            # TODO: rework the logic on what number to get next.
+            #       consider how many cookies that still exist to be eaten.
+            cookies_to_eat = int(product.find_element(By.CLASS_NAME, value="price").text.replace(',', ''))
+            break
+        # in case we have access of cookies
+        #cookies_to_eat -= Sid.num_cookies()
+        return cookies_to_eat
+
 
     def gobble(self, how_many: int = 100, for_how_long: float = 5.0):
         """
@@ -126,15 +149,15 @@ driver.get(url)
 Sid = CookieMonster(driver, lang='DE')
 
 # FIXME: I believe we can figure out a state on when to continue instead of sleeping
-# FIXME: We have to wait for javascript to set things up.0
+#        We have to wait for javascript to set things up.0
 sleep(2) # wait for javascript.
-
-RUN_FOR = 600 # seconds
-start = time()
 
 # just a caclution I did that we can do with just clicking the cookie.
 our_per_second = 24.0
 
+RUN_FOR = 600 # seconds
+
+start = time()
 cookies_to_eat = 15
 while time() - start <= RUN_FOR:
     _elapsed_time = round(time() - start)
@@ -151,31 +174,7 @@ while time() - start <= RUN_FOR:
 
     Sid.gobble(how_many=cookies_to_eat, for_how_long=time_to_eat)
 
-    if False:
-        Sid.want_more_cookies()
-    else:
-        # rethink and move to want_more_cookies()
-        upgrades = Sid.get_upgrades()
-        for upgrade in upgrades[::-1]:
-            try:
-                upgrade.click()
-                print('upgrade')
-                break
-            except StaleElementReferenceException:
-                """Just ignore this.. we will get it at some point."""
-                print('missed upgrade')
-                pass
-
-        products = Sid.get_products()
-        for product in products[::-1]:
-            product.click()
-            # TODO: rework the logic on what number to get next.
-            #       consider how many cookies that still exist to be eaten.
-            cookies_to_eat = int(product.find_element(By.CLASS_NAME, value="price").text.replace(',', ''))
-            break
-        # in case we have access of cookies
-        #cookies_to_eat -= Sid.num_cookies()
-
+    cookies_to_eat = Sid.want_more_cookies()
 
 print("Cookies per second", Sid.get_per_second())
 Sid.get_per_second()
