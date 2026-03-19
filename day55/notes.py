@@ -16,5 +16,5 @@ def bye():
     return 'Thanks for all the fish.'
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     app.run()
