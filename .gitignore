@@ -4,6 +4,7 @@ data/
 tmp/
 #secured environtment values
 my_env
+.venv*
 
 
 # dont include pycharm config
