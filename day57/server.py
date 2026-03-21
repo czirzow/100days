@@ -10,8 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def root():
-    year = date.today().year
-    return render_template('index.html', year=year)
+    return render_template('index.html', today=date.today())
 
 if __name__ == '__main__':
     app.run(debug=True)
